@@ -1,12 +1,12 @@
 from django.urls import path 
-from mpandraharaha.views import index
+# from mpandraharaha.views import index
 
 app_name = "mpandraharaha"
 
 urlpatterns = [
     
     #Homepage
-    path("", index, name="index"),
+    # path("", index, name="index"),
     
     #  #category
     # path("product/", product_list_view, name="product-list"),

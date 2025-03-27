@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ['fjkmtvf.pythonanywhere.com', '127.0.0.1']
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin', # 16/01/25
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -39,7 +40,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     
-    #app 
+
+    # Third Party
+    # 'taggit',
+    'ckeditor',
+    
+        #app 
     'mpandraharaha',
     'userauths',
 ]
@@ -59,7 +65,7 @@ ROOT_URLCONF = 'fjkmtvf.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')], # Templates Conf-1 14/01/25
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -139,9 +145,36 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 JAZZMIN_SETTINGS = {
-    'site_header' : "TVF Project ",
-    'site_brand' : "Where we are later ?",
+    'site_header' : "FJKM TVF",
+    'site_brand' : "FJKM TVF",
     # 'site_logo' : "TVF Project "
 }
 
 AUTH_USER_MODEL = 'userauths.User'
+
+CKEDITOR_UPLOAD_PATH = "uploads/"
+
+CKEDITOR_CONFIGS = {
+    "default": {
+         'skin': 'moono',
+         'codesnIppet_theme': 'monokai',
+         'toolbar': 'all',
+         'extraPlugins': ','.join([
+            'codesnippet',
+            'uploadimage', # the upload image feature
+            # your extra plugins here
+            'div',
+            'autolink',
+            'autoembed',
+            'embedsemantic',
+            'autogrow',
+            # 'devtools',
+            'widget',
+            'lineutils',
+            'clipboard',
+            'dialog',
+            'dialogui',
+            'elementspath',
+        ]),
+    }
+}
