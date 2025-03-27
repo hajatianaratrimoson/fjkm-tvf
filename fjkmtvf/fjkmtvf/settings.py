@@ -38,6 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
+    #app 
+    'mpandraharaha',
+    'userauths',
 ]
 
 MIDDLEWARE = [
@@ -118,7 +122,26 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+""" Statics & Media Configuration
+    14/01/25
+"""
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+
+MEDIA_URL = '/media/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+JAZZMIN_SETTINGS = {
+    'site_header' : "TVF Project ",
+    'site_brand' : "Where we are later ?",
+    # 'site_logo' : "TVF Project "
+}
+
+AUTH_USER_MODEL = 'userauths.User'
