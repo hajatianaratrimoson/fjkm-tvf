@@ -118,27 +118,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-""" Statics & Media Configuration
-    26/03/25
-"""
-
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
-
-MEDIA_URL = '/media/'
-
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
-
-
-
-JAZZMIN_SETTINGS = {
-    'site_header' : "TVF Project",
-    'site_brand' : "Where we are later ?",
-    # 'site_logo' : "TVF Project "
-}
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
