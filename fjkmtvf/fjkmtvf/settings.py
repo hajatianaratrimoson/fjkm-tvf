@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
+from django.conf.global_settings import LANGUAGES as DJANGO_LANGUAGES
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -53,6 +54,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    "django.middleware.locale.LocaleMiddleware",
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -116,11 +118,18 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
+TIME_ZONE = "Nairobi/Kenya"
+
 TIME_ZONE = 'UTC'
+
+LOCALE_PATHS = (os.path.join(BASE_DIR, "locale"),)
 
 USE_I18N = True
 
 USE_TZ = True
+
+# English default
+LANGUAGES = DJANGO_LANGUAGES
 
 
 # Static files (CSS, JavaScript, Images)
@@ -145,10 +154,88 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 JAZZMIN_SETTINGS = {
+    'site_title' : "FJKM Tranovato Faravohitra",
     'site_header' : "FJKM TVF",
     'site_brand' : "FJKM TVF",
-    # 'site_logo' : "TVF Project "
+    'site_logo' : "assets/img/mpiangona/tvf.png",
+    # CSS classes that are applied to the logo above
+    "site_logo_classes": "img-circle",
+    "copyright": "H&L.Co",
+    "search_model": ["userauths.User", "auth.Group"],
+    
+       # Links to put along the top menu
+    "topmenu_links": [
+
+        # Url that gets reversed (Permissions can be added)
+        {"name": "Home",  "url": "admin:index", "permissions": ["auth.view_user"]},
+
+        # external url that opens in a new window (Permissions can be added)
+        {"name": "Gazety", "url": "https://github.com/farridav/django-jazzmin/issues", "new_window": True},
+
+        # model admin to link to (Permissions checked against model)
+        # {"model": "mpandraharaha.Mpandray"},
+
+        # App with dropdown menu to all its models pages (Permissions checked against models)
+        {"app": "mpandraharaha"},
+        
+    ],
+
+     "usermenu_links": [
+        {"name": "Support", "url": "https://github.com/farridav/django-jazzmin/issues", "new_window": True},
+        {"model": "userauths.user"}
+    ],
+     
+    "show_sidebar": True,
+    "navigation_expanded": True,
+    "hide_apps": ["userauths", "auth"],
+    "show_ui_builder": True,
+     
+   "icons": {
+        "mpandraharaha.Mpandray": "fas fa-users-cog",
+        "mpandraharaha.Ankohonana": "fas fa-user",
+        "mpandraharaha.Mpiangona": "fas fa-users",
+   },
+    "related_modal_active": True,
+    "changeform_format": "horizontal_tabs",
+    "language_chooser": True,
+    
+    "changeform_format_overrides": {"auth.Groups": "vertical_tabs"},
+
 }
+
+JAZZMIN_UI_TWEAKS = {
+    "navbar_small_text": False,
+    "footer_small_text": False,
+    "body_small_text": False,
+    "brand_small_text": False,
+    "brand_colour": False,
+    "accent": "accent-primary",
+    "navbar": "navbar-white navbar-light",
+    "no_navbar_border": False,
+    "navbar_fixed": False,
+    "layout_boxed": False,
+    "footer_fixed": False,
+    "sidebar_fixed": False,
+    "sidebar": "sidebar-dark-primary",
+    "sidebar_nav_small_text": False,
+    "sidebar_disable_expand": False,
+    "sidebar_nav_child_indent": False,
+    "sidebar_nav_compact_style": False,
+    "sidebar_nav_legacy_style": False,
+    "sidebar_nav_flat_style": False,
+    "theme": "lumen",
+    # "dark_mode_theme": "flatly",
+    "button_classes": {
+        "primary": "btn-outline-primary",
+        "secondary": "btn-outline-secondary",
+        "info": "btn-outline-info",
+        "warning": "btn-outline-warning",
+        "danger": "btn-outline-danger",
+        "success": "btn-outline-success",
+    },
+}
+
+X_FRAME_OPTIONS = 'SAMEORIGIN'
 
 AUTH_USER_MODEL = 'userauths.User'
 

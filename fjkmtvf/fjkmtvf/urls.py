@@ -21,6 +21,7 @@ from django.urls import path, include
 # css & js Synchroniser 15/01/25
 from django.conf import settings
 from django.conf.urls.static import static
+from django.conf.urls.i18n import i18n_patterns
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,7 +30,9 @@ urlpatterns = [
     # path('user/', include("userauths.urls")),
     
     path("ckeditor/", include("ckeditor_uploader.urls")),
+    path("i18n/", include("django.conf.urls.i18n")),
 ]
+urlpatterns += i18n_patterns(path("admin/", admin.site.urls))
 
 """
 - activate when debug is true
