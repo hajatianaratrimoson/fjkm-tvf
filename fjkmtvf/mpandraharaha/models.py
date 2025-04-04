@@ -26,12 +26,13 @@ class Ankohonana(models.Model):
 class Mpiangona(models.Model):
     piid = ShortUUIDField(unique=True, length=10, max_length=30, prefix="pgn", alphabet="abcdefgh12345")
     
-    name = models.CharField(max_length=100, default="vaovao", verbose_name="Anarana")
-    surname = models.CharField(max_length=100, default="vaovao", verbose_name="Fanampin'anarana")
+    name = models.CharField(max_length=100, verbose_name="Anarana")
+    surname = models.CharField(max_length=100, verbose_name="Fanampin'anarana")
     
     image = models.ImageField(upload_to="mpiangona", default=('i8.jpg'), verbose_name="Sary")
-    #description  = models.TextField(null=True, blank=True, default="I am an Amazing Vendor")
-    description  = RichTextUploadingField(null=True, blank=True, default="Mpiangona ato FJKM Tranovato Faravohitra", verbose_name="Fanamarihana",help_text="Filazana ny mombamomba ny mpiangona")
+    # description  = models.TextField(null=True, blank=True, default="I am an Amazing Vendor")
+    description  = models.CharField(max_length=500, null=True, blank=True, default="Mpiangona ato FJKM Tranovato Faravohitra", verbose_name="Fanamarihana",help_text="Filazana ny mombamomba ny mpiangona")
+    # description  = RichTextUploadingField(null=True, blank=True, default="Mpiangona ato FJKM Tranovato Faravohitra", verbose_name="Fanamarihana",help_text="Filazana ny mombamomba ny mpiangona")
     address = models.CharField(max_length=100, default="Antananarivo", verbose_name="Adiresy")
     contact = models.CharField(max_length=13,validators=[RegexValidator(r'^\d\d\d \d\d \d\d\d \d\d' , message="Tsy atao abd fa tarehimarika ary asiana elanelany")], help_text="034 10 466 70", verbose_name="Finday")  
     ankohonana = models.ForeignKey(Ankohonana, related_name="ankohonana", on_delete=models.SET_NULL, null=True, help_text="Mitondra ny anaran'ny Ray lohan'ny fianakaviana")  

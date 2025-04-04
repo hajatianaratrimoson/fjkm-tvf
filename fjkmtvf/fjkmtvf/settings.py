@@ -12,9 +12,12 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
+
+#Library for universal local language i8n
 from django.conf.global_settings import LANGUAGES as DJANGO_LANGUAGES
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+#Conf using local language
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -54,6 +57,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    #Local Conf Language Middleware
     "django.middleware.locale.LocaleMiddleware",
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -122,13 +126,14 @@ TIME_ZONE = "Nairobi/Kenya"
 
 TIME_ZONE = 'UTC'
 
+#Local Conf For Universal Language
 LOCALE_PATHS = (os.path.join(BASE_DIR, "locale"),)
 
 USE_I18N = True
 
 USE_TZ = True
 
-# English default
+# Library Configurating Universal Language
 LANGUAGES = DJANGO_LANGUAGES
 
 
@@ -154,6 +159,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 JAZZMIN_SETTINGS = {
+    "welcome_sign": "Ataovy ho mpianatro ny firenena rehetra",
+     "user_avatar": "avatar",
     'site_title' : "FJKM Tranovato Faravohitra",
     'site_header' : "FJKM TVF",
     'site_brand' : "FJKM TVF",
@@ -195,14 +202,18 @@ JAZZMIN_SETTINGS = {
         "mpandraharaha.Ankohonana": "fas fa-user",
         "mpandraharaha.Mpiangona": "fas fa-users",
    },
+   
     "related_modal_active": True,
-    "changeform_format": "horizontal_tabs",
+    #Inlines Tab form
+    "changeform_format": "vertical_tabs",
+    #Activate Langage Choice. Need Config Setting i8N Before 
     "language_chooser": True,
     
     "changeform_format_overrides": {"auth.Groups": "vertical_tabs"},
 
 }
 
+#Theme Choice
 JAZZMIN_UI_TWEAKS = {
     "navbar_small_text": False,
     "footer_small_text": False,
@@ -235,6 +246,7 @@ JAZZMIN_UI_TWEAKS = {
     },
 }
 
+#Activate Modal Source
 X_FRAME_OPTIONS = 'SAMEORIGIN'
 
 AUTH_USER_MODEL = 'userauths.User'

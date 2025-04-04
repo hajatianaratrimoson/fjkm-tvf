@@ -8,6 +8,7 @@ from userauths.models import User
 """
 
 class UserAdmin(admin.ModelAdmin):
+    exclude = ['password']
     list_display = ['username', 'email', 'bio']
     search_fields = ['username', 'email']
     
