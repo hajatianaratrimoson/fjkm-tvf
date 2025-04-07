@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     # Third Party
     # 'taggit',
     'ckeditor',
+    'import_export',
     
         #app 
     'mpandraharaha',
@@ -205,11 +206,11 @@ JAZZMIN_SETTINGS = {
    
     "related_modal_active": True,
     #Inlines Tab form
-    "changeform_format": "vertical_tabs",
+    "changeform_format": "single",
     #Activate Langage Choice. Need Config Setting i8N Before 
     "language_chooser": True,
     
-    "changeform_format_overrides": {"auth.Groups": "vertical_tabs"},
+    # "changeform_format_overrides": {"auth.Groups": "vertical_tabs"},
 
 }
 
@@ -234,7 +235,7 @@ JAZZMIN_UI_TWEAKS = {
     "sidebar_nav_compact_style": False,
     "sidebar_nav_legacy_style": False,
     "sidebar_nav_flat_style": False,
-    "theme": "lumen",
+    "theme": "flatly",
     # "dark_mode_theme": "flatly",
     "button_classes": {
         "primary": "btn-outline-primary",
