@@ -107,8 +107,8 @@ class Mpiangona(models.Model):
     ankohonana = models.ForeignKey(Ankohonana, related_name="ankohonana", on_delete=models.SET_NULL, null=True, help_text="Mitondra ny anaran'ny Ray lohan'ny fianakaviana")  
     zanaka = models.IntegerField(default=0, verbose_name="Zanaka", help_text="Isan'ny zanaka")
     
-    asa = models.CharField(max_length=50, verbose_name="Asa", null=True)
-    fanomezana = models.CharField(max_length=50, verbose_name="Fanomezam-pahasoavana", null=True)
+    asa = models.CharField(max_length=50, verbose_name="Asa", null=True, blank=True)
+    fanomezana = models.CharField(max_length=50, verbose_name="Fanomezam-pahasoavana", null=True, blank=True)
     
     class Meta:
         verbose_name_plural = "Mpiangona" 

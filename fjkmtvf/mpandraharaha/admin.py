@@ -17,14 +17,14 @@ class MpiangonaAdminInline(admin.TabularInline):
     verbose_name_plural = "Iray Trano" # Plural rename tab Title
     readonly_fields = ['anarana', 'fanampiny', 'toerana'] # ReadOnly
     # general_tab = "ankohonana"
-    # fields = ['anarana', 'fanampiny', 'toerana']
+    fields = ['anarana', 'fanampiny', 'toerana']
     # radio_fields = {"ankohonana": admin.HORIZONTAL}
 
 class MpiangonaResource(resources.ModelResource):
     class Meta:
         model = Mpiangona
         # List related field by ForeigKey
-        # fields = ['anarana', 'fanampiny', 'adiresy', 'finday','ankohonana__anarana','toerana', 'zanaka']
+        fields = ['anarana', 'fanampiny', 'adiresy', 'finday','ankohonana__anarana','toerana', 'zanaka']
 
 @admin.register(Mpiangona)
 class MpiangonaAdmin(ImportExportModelAdmin):
@@ -54,7 +54,7 @@ class MpandrayAdmin(ImportExportModelAdmin):
 class MpikambanaResource(resources.ModelResource):
     class Meta:
         model = Mpikambana
-        # fields = ('mpiangona__anarana', 'mpiangona__fanampiny', 'tossaafiko__anarana', 'andraikitra',)
+        fields = ('mpiangona__anarana', 'mpiangona__fanampiny', 'tossaafiko__anarana', 'andraikitra',)
 
 @admin.register(Mpikambana)
 class MpikambanaAdmin(ImportExportModelAdmin):
@@ -68,7 +68,7 @@ class MpikambanaAdmin(ImportExportModelAdmin):
 class AnkohonanaResource(resources.ModelResource):
     class Meta:
         model = Ankohonana
-        # fields = ['anarana', 'faritra']  
+        fields = ['anarana', 'faritra']  
 
 @admin.register(Ankohonana) 
 class AnkohonanaAdmin(ImportExportModelAdmin):
@@ -85,7 +85,7 @@ class AnkohonanaAdmin(ImportExportModelAdmin):
 class TossaafikoResource(resources.ModelResource):
     class Meta:
         model = Tossaafiko
-        # fields = ['anarana', 'fanamarihana']
+        fields = ['anarana', 'fanamarihana']
 
 
 @admin.register(Tossaafiko)
