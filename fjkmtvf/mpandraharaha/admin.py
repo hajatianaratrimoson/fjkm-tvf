@@ -4,53 +4,56 @@ from django.contrib.auth.admin import UserAdmin
 from import_export.admin import ImportExportModelAdmin, ExportActionMixin
 from import_export.widgets import ForeignKeyWidget
 from import_export import resources, fields
-# class ProductImamgesAdmin(admin.TabularInline):
-#     model = ProductImages
+
+
+"""
+ForeignKey Tab list vew
+"""
 class MpiangonaAdminInline(admin.TabularInline):
-    
     model = Mpiangona
-    can_delete = False
-    extra = 0
-    verbose_name =['Ankohonana','Iray Trano']
-    verbose_name_plural = "Iray Trano"
-    readonly_fields = ['name', 'surname', 'toerana']
-    general_tab = "ankohonana"
-    fields = ['name', 'surname', 'toerana']
+    can_delete = False # ReadOnly
+    extra = 0 # Reset Default Count = 3
+    verbose_name =['Ankohonana','Iray Trano'] # Rename Tab Title
+    verbose_name_plural = "Iray Trano" # Plural rename tab Title
+    readonly_fields = ['anarana', 'fanampiny', 'toerana'] # ReadOnly
+    # general_tab = "ankohonana"
+    fields = ['anarana', 'fanampiny', 'toerana']
     # radio_fields = {"ankohonana": admin.HORIZONTAL}
 
 class MpiangonaResource(resources.ModelResource):
     class Meta:
         model = Mpiangona
-        fields = ['name', 'surname', 'adress', 'contact','ankohonana__anarana','toerana', 'zanaka']
+        # List related field by ForeigKey
+        fields = ['anarana', 'fanampiny', 'adiresy', 'finday','ankohonana__anarana','toerana', 'zanaka']
 
 @admin.register(Mpiangona)
 class MpiangonaAdmin(ImportExportModelAdmin):
     resource_classes = [MpiangonaResource]
-    exclude=['piid']
-    list_display = ['name', 'surname', 'ankohonana']
+    # exclude=['piid']
+    list_display = ['anarana', 'fanampiny', 'anarana_zatovo','ankohonana']
     list_select_related = ['ankohonana']
     list_filter = ['ankohonana', 'ankohonana__faritra']
     
     #Activate search field on model
-    search_fields = ['name', 'surname', 'ankohonana__anarana']
+    search_fields = ['anarana', 'fanampiny', 'ankohonana__anarana', 'anarana_zatovo']
 
 
 class MpandrayRessource(resources.ModelResource):
     class Meta:
         model: Mpandray
-        fields = ['karatra','mpandray_mpiangona__name', 'mpandray_mpiangona__surname', ]
+        fields = ['karatra','mpiangona__anarana', 'mpiangona__fanampiny', ]
 @admin.register(Mpandray)
 class MpandrayAdmin(ImportExportModelAdmin):
+    # exclude = ['paid']
     resource_classes = [MpandrayRessource]
-    # fields = ['mpiangona__name']
-    list_display = ['karatra','mpandray_mpiangona']
-    list_filter = ['karatra', 'mpandray_mpiangona', 'taona', 'fiangonana']
+    list_display = ['karatra','mpiangona']
+    list_filter = ['karatra', 'mpiangona', 'taona', 'fiangonana']
 
 
 class MpikambanaResource(resources.ModelResource):
     class Meta:
         model = Mpikambana
-        fields = ('mpiangona__name', 'mpiangona__surname', 'tossaafiko__anarana', 'andraikitra',)
+        fields = ('mpiangona__anarana', 'mpiangona__fanampiny', 'tossaafiko__anarana', 'andraikitra',)
 
 @admin.register(Mpikambana)
 class MpikambanaAdmin(ImportExportModelAdmin):
@@ -58,19 +61,36 @@ class MpikambanaAdmin(ImportExportModelAdmin):
     list_display = ['tossaafiko', 'mpiangona', 'andraikitra']
     # search_fields = ['tossaafiko', 'mpiangona']
     list_filter = ['tossaafiko', 'mpiangona', 'andraikitra']
-        
+     
+     
+
+class AnkohonanaResource(resources.ModelResource):
+    class Meta:
+        model = Ankohonana
+        fields = ['anarana', 'faritra']  
+
+@admin.register(Ankohonana) 
 class AnkohonanaAdmin(ImportExportModelAdmin):
-    model = Ankohonana
+    resource_classes = [AnkohonanaResource]
     inlines = [MpiangonaAdminInline]
     #exclude field mentionned
-    exclude=['ankid']
+    # exclude=['ankid']
     list_display = ['anarana','faritra']
     #Activate search field on model 
-    search_fields = ['anarana', 'faritra']
-    list_filter = ['faritra']
+    # search_fields = ['anarana', 'faritra']
+    list_filter = ['anarana', 'faritra']
 
+
+class TossaafikoResource(resources.ModelResource):
+    class Meta:
+        model = Tossaafiko
+        fields = ['anarana', 'fanamarihana']
+
+
+@admin.register(Tossaafiko)
 class TossaafikoAdmin(ImportExportModelAdmin):
-    model = Tossaafiko
+    resource_classes = [TossaafikoResource]
+    # exclude = ['said']
     list_display = ['anarana', 'fanamarihana']
     
     #Activate search field on model
@@ -78,6 +98,5 @@ class TossaafikoAdmin(ImportExportModelAdmin):
 
     
     
-admin.site.register(Ankohonana, AnkohonanaAdmin)
-admin.site.register(Tossaafiko, TossaafikoAdmin)
+# admin.site.register(Ankohonana, AnkohonanaAdmin)
 

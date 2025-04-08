@@ -9,12 +9,31 @@ from django.core.validators import RegexValidator
 
 TOSSAAFIKO = (
     ("stk", "STK"),
+    ("ktt", "KTT"),
     ("ssa", "SSA"),
     ("fdl", "FDL"),
-    ("toby_fifaliana", "Toby Fifaliana"),
-    ("toby_fitiavana", "Toby Fitiavana"),
-    ("toby_fahamarinana", "Toby Fahamarinana"),
-    ("toby_fiadanana", "Toby Fiadanana"),
+    ("aam", "AAM"),
+    ("safif", "SAFIF"),
+    ("fafi", "FAFI"),
+    ("fmo", "FMO"),
+    ("svm", "SVM"),
+    ("dorkasy", "DORKASY"),
+    ("vfl", "VFL"),
+    ("zr", "ZR"),
+    ("sampati", "SAMPATI"),
+    ("amboarampeo", "AMBOARAMPEO"),
+    ("aff", "AFF"),
+    ("kpsv", "KPSV"),
+    ("kga", "KGA"),
+    ("kff", "KFF"),
+    ("kvo", "KVO"),
+    ("kftl", "KFTL"),
+    ("kmb", "KMB"),
+    ("tpram", "TPRAM"),
+    ("toby_fifaliana", "TOBY FIFALIANA"),
+    ("toby_fitiavana", "TOBY FITIAVANA"),
+    ("toby_fahamarinana", "TOBY FAHAMARINANA"),
+    ("toby_fiadanana", "TOBY FIADANANA"),
 )
 
 ANDRAIKITRA = (
@@ -24,10 +43,12 @@ ANDRAIKITRA = (
     ("tonia_vola", "Mpitan-tsoratry ny vola"),
     ("mpitahiry_vola", "Mpitahiry Vola"),
     ("mpanolo_tsaina", "Mpanolo-tsaina"),
-    ("mpiakambana", "Mpikambana"),
+    ("mpikambana", "Mpikambana"),
     ("mpitarika_rantsana", "Mpitarika Rantsana"),
     ("mpianatra_ssa", "Mpianatra SSA"),
     ("mpampianatra_ssa", "Mpampianatra SSA"),
+    ("coach_rantsana", "Coaach Rantsana"),
+    ("mpitarika_sampati", "Mpitarika Sampati"),
 )
 
 def user_directory_path(instance, filename):
@@ -35,9 +56,10 @@ def user_directory_path(instance, filename):
 
 
 class Ankohonana(models.Model):
-    ankid = ShortUUIDField(unique=True, length=10, max_length=30, prefix="pad", alphabet="abcdefgh12345")
-    anarana = models.CharField(max_length=50, blank=True, null=True)
-    faritra = models.CharField(max_length=8, blank=True, null=True)
+    # ankid = ShortUUIDField(unique=True, length=10, max_length=30, prefix="pad", alphabet="abcdefgh12345")
+   
+    anarana = models.CharField(max_length=50, blank=True, null=True, help_text="Anaran'ny raim-pianakaviana")
+    faritra = models.CharField(max_length=8, blank=True, null=True, help_text="faritra misy ny toerana hipetrahan'ny ankohonana")
     
     
     class Meta:
@@ -48,10 +70,10 @@ class Ankohonana(models.Model):
 
 
 class Tossaafiko(models.Model):
-    said = ShortUUIDField(unique=True, length=10, max_length=30, prefix="said", alphabet="abcdefgh12345")
-    anarana = models.CharField(verbose_name='tossaafiko',choices=TOSSAAFIKO, max_length=17, default="ssa")
-    # mpiangona = models.ManyToManyField(Mpiangona, related_name='mpiangona', null=True)    
-    fanamarihana = models.TextField(blank=True, null=True)
+    # said = ShortUUIDField(unique=True, length=10, max_length=30, prefix="said", alphabet="abcdefgh12345")
+    
+    anarana = models.CharField(verbose_name='tossaafiko',choices=TOSSAAFIKO,unique=True,  max_length=17, default="ssa", help_text="Anarana oentin'ny Tossaafiko", error_messages= {'required': 'Efa misy io anarana io'})   
+    fanamarihana = models.TextField(blank=True, null=True, help_text="Ny mombamomba ny Tossaafiko")
     
     class Meta:
         verbose_name_plural = "Tossaafiko" 
@@ -61,25 +83,24 @@ class Tossaafiko(models.Model):
 
 
 class Mpiangona(models.Model):
-    piid = ShortUUIDField(unique=True, length=10, max_length=30, prefix="pgn", alphabet="abcdefgh12345")
+    # piid = ShortUUIDField(unique=True, length=10, max_length=30, prefix="pgn", alphabet="abcdefgh12345")
     
-    name = models.CharField(max_length=100, verbose_name="Anarana")
-    surname = models.CharField(max_length=100, verbose_name="Fanampin'anarana")
-    
+    anarana = models.CharField(max_length=30, verbose_name="Anarana")
+    anarana_zatovo = models.CharField(max_length=30, verbose_name="Anarana zatovo", null=True, blank=True)
+    fanampiny = models.CharField(max_length=25, verbose_name="Fanampin'anarana")
     toerana = models.CharField(max_length=100,default="Zanaka", help_text="Toerana misy azy eo anivon'ny ankohonana")
-    # tossaafiko = models.ManyToManyField(Tossaafiko, related_name='tossaafiko', null=True, blank=True)
+    sary = models.ImageField(upload_to="mpiangona", default=('i8.jpg'), verbose_name="Sary")
+    daty_nahaterahana = models.DateField(verbose_name='Daty nahaterahana', auto_now=True)
+    fanamarihana  = models.CharField(max_length=500, null=True, blank=True, default="Mpiangona ato FJKM Tranovato Faravohitra", verbose_name="Fanamarihana",help_text="Filazana ny mombamomba ny mpiangona")
     
-    
-    image = models.ImageField(upload_to="mpiangona", default=('i8.jpg'), verbose_name="Sary")
-    # description  = models.TextField(null=True, blank=True, default="I am an Amazing Vendor")
-    description  = models.CharField(max_length=500, null=True, blank=True, default="Mpiangona ato FJKM Tranovato Faravohitra", verbose_name="Fanamarihana",help_text="Filazana ny mombamomba ny mpiangona")
     # description  = RichTextUploadingField(null=True, blank=True, default="Mpiangona ato FJKM Tranovato Faravohitra", verbose_name="Fanamarihana",help_text="Filazana ny mombamomba ny mpiangona")
-    address = models.CharField(max_length=100, default="Antananarivo", verbose_name="Adiresy")
-    contact = models.CharField(max_length=13,validators=[RegexValidator(r'^\d\d\d \d\d \d\d\d \d\d' , message="Tsy atao abd fa tarehimarika ary asiana elanelany")], help_text="034 10 466 70", verbose_name="Finday")  
+    
+    adiresy = models.CharField(max_length=100, default="Antananarivo", verbose_name="Adiresy")
+    finday = models.CharField(max_length=13,validators=[RegexValidator(r'^\d\d\d \d\d \d\d\d \d\d' , message="Tsy atao abd fa tarehimarika ary asiana elanelany")], help_text="034 10 466 70", verbose_name="Finday")  
+    finday_2 = models.CharField(max_length=13,validators=[RegexValidator(r'^\d\d\d \d\d \d\d\d \d\d' , message="Tsy atao abd fa tarehimarika ary asiana elanelany")], help_text="034 10 466 70", verbose_name="Finday hafa", null=True, blank=True)  
+    mailaka = models.CharField(max_length=35, null=True, blank=True, verbose_name="Mailaka")
     
     ankohonana = models.ForeignKey(Ankohonana, related_name="ankohonana", on_delete=models.SET_NULL, null=True, help_text="Mitondra ny anaran'ny Ray lohan'ny fianakaviana")  
-    
-    
     zanaka = models.IntegerField(default=0, verbose_name="Zanaka", help_text="Isan'ny zanaka")
     class Meta:
         verbose_name_plural = "Mpiangona" 
@@ -89,26 +110,29 @@ class Mpiangona(models.Model):
         return mark_safe('<img src="%s" width="50 height="50 />' % (self.image.url))
     
     def __str__(self):
-        return f"{self.name} {self.surname}"
+        return f"{self.anarana} {self.fanampiny}"
     
 class Mpikambana(models.Model):
-    pikid = ShortUUIDField(unique=True, length=10, max_length=30, prefix="pikid", alphabet="abcdefgh12345")
-    mpiangona = models.ForeignKey(Mpiangona, on_delete=models.SET_NULL, null=True)
+    # pikid = ShortUUIDField(unique=True, length=10, max_length=30, prefix="pikid", alphabet="abcdefgh12345")
+    
+    mpiangona = models.ForeignKey(Mpiangona, related_name='mpikambana_mpiangona', on_delete=models.SET_NULL, null=True)
     tossaafiko = models.ForeignKey(Tossaafiko, related_name='tossaafiko', on_delete=models.SET_NULL, null=True)
-    andraikitra = models.CharField(max_length=18,choices=ANDRAIKITRA)
+    andraikitra = models.CharField(max_length=18,choices=ANDRAIKITRA, help_text="Andraikitra ao amin'ny Tossaafiko")
     
     class Meta:
         verbose_name_plural = "Mpikambana" 
         
     def __str__(self):
-        return f"{self.mpiangona.name} {self.mpiangona.surname}"
+        return f"{self.mpiangona.anarana} {self.mpiangona.fanampiny}"
 
 class Mpandray(models.Model):
-    paid = ShortUUIDField(unique=True, length=10, max_length=30, prefix="pad", alphabet="abcdefgh12345")
-    mpandray_mpiangona = models.ForeignKey(Mpiangona, related_name="mpandray_mpiangona", on_delete=models.SET_NULL, null=True, verbose_name='Mpiangona')
+    # paid = ShortUUIDField(unique=True, length=10, max_length=30, prefix="pad", alphabet="abcdefgh12345")
+    
+    mpiangona = models.ForeignKey(Mpiangona, related_name="mpandray_mpiangona", on_delete=models.SET_NULL, null=True, verbose_name='Mpiangona')
+    
     karatra = models.CharField(max_length=6,validators=[RegexValidator(r'^[V|L]-\d\d\d\d', message="Atao mitovy amin'ny ohatra io ambany io azafady") ],help_text="V-0000 na L-0000" ,blank=True, null=True)
-    taona = models.DateField()
-    fiangonana = models.CharField(max_length=50)
+    taona = models.DateField(help_text='Taona naha mpandray')
+    fiangonana = models.CharField(max_length=50, help_text='Fiangonana nanamasinana ho mpandray')
     
     class Meta:
         verbose_name_plural = "Mpandray" 
