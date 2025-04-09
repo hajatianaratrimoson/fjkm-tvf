@@ -5,8 +5,12 @@ from userauths.models import User
 from taggit.managers import TaggableManager
 from ckeditor_uploader.fields import RichTextUploadingField
 from django.core.validators import RegexValidator
+from datetime import datetime
 
-
+SATA = (
+    ("mianatra", "Mianatra"),
+    ("mpandray", "Mpandray"),
+)
 TOSSAAFIKO = (
     ("stk", "STK"),
     ("ktt", "KTT"),
@@ -123,7 +127,7 @@ class Mpiangona(models.Model):
 class Mpikambana(models.Model):
     # pikid = ShortUUIDField(unique=True, length=10, max_length=30, prefix="pikid", alphabet="abcdefgh12345")
     
-    mpiangona = models.ForeignKey(Mpiangona, related_name='mpikambana_mpiangona', on_delete=models.SET_NULL, null=True)
+    mpikambana = models.ForeignKey(Mpiangona, related_name='mpikambana', on_delete=models.SET_NULL, null=True)
     tossaafiko = models.ForeignKey(Tossaafiko, related_name='tossaafiko', on_delete=models.SET_NULL, null=True)
     andraikitra = models.CharField(max_length=18,choices=ANDRAIKITRA, help_text="Andraikitra ao amin'ny Tossaafiko")
     
@@ -131,12 +135,12 @@ class Mpikambana(models.Model):
         verbose_name_plural = "Mpikambana" 
         
     def __str__(self):
-        return f"{self.mpiangona.anarana} {self.mpiangona.fanampiny}"
+        return f"{self.mpikambana}"
 
 class Mpandray(models.Model):
     # paid = ShortUUIDField(unique=True, length=10, max_length=30, prefix="pad", alphabet="abcdefgh12345")
     
-    mpiangona = models.ForeignKey(Mpiangona, related_name="mpandray_mpiangona", on_delete=models.SET_NULL, null=True, verbose_name='Mpiangona')
+    mpandray = models.ForeignKey(Mpiangona, related_name="mpandray_mpiangona", on_delete=models.SET_NULL, null=True, verbose_name='Mpandray')
     
     karatra = models.CharField(max_length=6,validators=[RegexValidator(r'^[V|L]-\d\d\d\d', message="Atao mitovy amin'ny ohatra io ambany io azafady") ],help_text="V-0000 na L-0000" ,blank=True, null=True)
     taona = models.DateField(help_text='Taona naha mpandray')
@@ -149,5 +153,33 @@ class Mpandray(models.Model):
         return self.karatra
     
 
+class Batisa(models.Model):
+    anarana = models.ForeignKey(Mpiangona, related_name="batisa_mpiangona", on_delete=models.SET_NULL, null=True, blank=True, verbose_name="Anarana" )
+    
+    daty_nanolorana = models.DateField(verbose_name="Daty nanolorana", default=datetime.now, null=True, blank=True)
+    daty_batisa = models.DateField(verbose_name="Daty batisa", default=datetime.now, null=True, blank=True)
+    rad = models.ManyToManyField(Mpiangona, verbose_name="Ray aman-dReny", null=True, blank=True)
+    fiangonana = models.CharField(max_length=50, help_text="Fiangonana nanaovana batisa", null=True, blank=True)
+    firenena = models.CharField(max_length=25, help_text="Firenena nanaovana batisa", null=True, blank=True)
+    class Meta:
+        verbose_name_plural = "Batisa"
+    
+    def __str__(self):
+        return f"{self.anarana}"
 
+
+class Katekomena(models.Model):
+    anarana = models.ForeignKey(Mpiangona, related_name="katekomena_mpiangona", on_delete=models.SET_NULL, null=True, blank=True, verbose_name="Anarana" )
+    
+    andiany =  models.CharField(max_length=20, help_text="Anarana oentin'ny andian'ny katekomena", null=True, blank=True)
+    daty_nidirana = models.DateField(verbose_name="Daty nidirana nianatra", default=datetime.now, null=True, blank=True)
+    daty_nivoahana = models.DateField(verbose_name="Daty nivoahana katekomena", default=datetime.now, null=True, blank=True)
+    fiangonana = models.CharField(max_length=50, help_text="Fiangonana namoahana azy", null=True, blank=True)
+    firenena = models.CharField(max_length=25, help_text="Firenena namoahana azy", null=True, blank=True)
+    sata = models.CharField(max_length=15, choices=SATA, default='mianatra') 
+    class Meta:
+        verbose_name_plural = "Katekomena"
+    
+    def __str__(self):
+        return f"{self.anarana}"
    

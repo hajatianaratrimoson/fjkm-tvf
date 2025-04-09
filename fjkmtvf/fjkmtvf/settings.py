@@ -183,16 +183,16 @@ JAZZMIN_SETTINGS = {
     # CSS classes that are applied to the logo above
     "site_logo_classes": "img-circle",
     "copyright": "H&L.Co",
-    "search_model": ["userauths.User", "auth.Group"],
+    # "search_model": ["userauths.User", "auth.Group"],
     
        # Links to put along the top menu
     "topmenu_links": [
 
         # Url that gets reversed (Permissions can be added)
-        {"name": "Home",  "url": "admin:index", "permissions": ["auth.view_user"]},
+        # {"name": "Home",  "url": "admin:index", "permissions": ["auth.view_user"]},
 
         # external url that opens in a new window (Permissions can be added)
-        {"name": "Gazety", "url": "https://github.com/farridav/django-jazzmin/issues", "new_window": True},
+        {"name": "Facebook", "url": "https://web.facebook.com/groups/36639447687/", "new_window": True},
 
         # model admin to link to (Permissions checked against model)
         # {"model": "mpandraharaha.Mpandray"},
@@ -203,8 +203,9 @@ JAZZMIN_SETTINGS = {
     ],
 
      "usermenu_links": [
-        {"name": "Support", "url": "https://github.com/farridav/django-jazzmin/issues", "new_window": True},
-        {"model": "userauths.user"}
+        # {"name": "Support", "url": "https://github.com/farridav/django-jazzmin/issues", "new_window": True},
+        {"name": "Ekipa KPSV", "model": "userauths.user"},
+        {"name": "Permission", "model": "auth.group"}
     ],
      
     "show_sidebar": True,
@@ -216,13 +217,17 @@ JAZZMIN_SETTINGS = {
         "mpandraharaha.Mpandray": "fas fa-users-cog",
         "mpandraharaha.Ankohonana": "fas fa-user",
         "mpandraharaha.Mpiangona": "fas fa-users",
+        "mpandraharaha.Mpikambana": "fas fa-users",
+        "mpandraharaha.Tossaafiko": "fas fa-users",
+        "mpandraharaha.Batisa": "fas fa-user",
    },
    
     "related_modal_active": True,
     #Inlines Tab form
-    "changeform_format": "single",
+    "changeform_format": "horizontal_tab",
     #Activate Langage Choice. Need Config Setting i8N Before 
     "language_chooser": True,
+     "use_google_fonts_cdn": True,
     
     # "changeform_format_overrides": {"auth.Groups": "vertical_tabs"},
 

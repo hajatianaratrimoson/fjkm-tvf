@@ -1,5 +1,5 @@
 from django.contrib import admin
-from mpandraharaha.models import Mpiangona, Mpandray,Ankohonana, Tossaafiko, Mpikambana
+from mpandraharaha.models import Mpiangona, Mpandray,Ankohonana, Tossaafiko, Mpikambana, Batisa, Katekomena
 from django.contrib.auth.admin import UserAdmin
 from import_export.admin import ImportExportModelAdmin, ExportActionMixin
 from import_export.widgets import ForeignKeyWidget
@@ -19,6 +19,48 @@ class MpiangonaAdminInline(admin.TabularInline):
     # general_tab = "ankohonana"
     fields = ['anarana', 'fanampiny', 'toerana']
     # radio_fields = {"ankohonana": admin.HORIZONTAL}
+    
+class MpikambanaAdminInline(admin.TabularInline):
+    model = Mpikambana
+    can_delete = False # ReadOnly
+    extra = 0 # Reset Default Count = 3
+    verbose_name =['Mpikambana'] # Rename Tab Title
+    verbose_name_plural = "Tossaafiko" # Plural rename tab Title
+    readonly_fields = ['mpikambana','tossaafiko', 'andraikitra'] # ReadOnly
+    # general_tab = "ankohonana"
+    fields = ['mpikambana','tossaafiko', 'andraikitra']
+    # radio_fields = {"ankohonana": admin.HORIZONTAL}
+
+class MpandrayAdminInline(admin.TabularInline):
+    model = Mpandray
+    can_delete = False # ReadOnly
+    extra = 0 # Reset Default Count = 3
+    verbose_name =['Mpandray'] # Rename Tab Title
+    verbose_name_plural = "Mpandray" # Plural rename tab Title
+    readonly_fields = ['karatra','taona', 'fiangonana'] # ReadOnly
+    # general_tab = "ankohonana"
+    fields = ['karatra','taona', 'fiangonana']
+
+class BatisaAdminInline(admin.TabularInline):
+    model = Batisa
+    can_delete = False # ReadOnly
+    extra = 0 # Reset Default Count = 3
+    verbose_name =['Batisa'] # Rename Tab Title
+    verbose_name_plural = "Batisa" # Plural rename tab Title
+    readonly_fields = ['daty_nanolorana','daty_batisa', 'rad', 'fiangonana', 'firenena'] # ReadOnly
+    # general_tab = "ankohonana"
+    fields = ['daty_nanolorana','daty_batisa', 'rad', 'fiangonana', 'firenena']
+
+class KatekomenaAdminInline(admin.TabularInline):
+    model = Katekomena
+    can_delete = False # ReadOnly
+    extra = 0 # Reset Default Count = 3
+    verbose_name =['Katekomena'] # Rename Tab Title
+    verbose_name_plural = "Katekomena" # Plural rename tab Title
+    readonly_fields = ['anarana','andiany', 'daty_nidirana', 'daty_nivoahana', 'fiangonana', 'firenena'] # ReadOnly
+    # general_tab = "ankohonana"
+    fields = ['anarana','andiany', 'daty_nidirana','daty_nivoahana', 'fiangonana', 'firenena']
+
 
 class MpiangonaResource(resources.ModelResource):
     class Meta:
@@ -29,6 +71,8 @@ class MpiangonaResource(resources.ModelResource):
 @admin.register(Mpiangona)
 class MpiangonaAdmin(ImportExportModelAdmin):
     resource_classes = [MpiangonaResource]
+    inlines = [BatisaAdminInline,KatekomenaAdminInline, MpandrayAdminInline, MpikambanaAdminInline ]
+    
     # exclude=['piid']
     list_display = ['anarana', 'fanampiny', 'anarana_zatovo','ankohonana']
     list_select_related = ['ankohonana']
@@ -41,27 +85,27 @@ class MpiangonaAdmin(ImportExportModelAdmin):
 class MpandrayResource(resources.ModelResource):
     class Meta:
         model: Mpandray
-        fields = ['karatra','mpiangona__anarana', 'mpiangona__fanampiny', ]
+        fields = ['karatra','mpandray__anarana', 'mpandray__fanampiny', ]
 
 @admin.register(Mpandray)
 class MpandrayAdmin(ImportExportModelAdmin):
     # exclude = ['paid']
     resource_classes = [MpandrayResource]
-    list_display = ['karatra','mpiangona']
-    list_filter = ['karatra', 'mpiangona', 'taona', 'fiangonana']
+    list_display = ['karatra','mpandray']
+    list_filter = ['karatra', 'mpandray', 'taona', 'fiangonana']
 
 
 class MpikambanaResource(resources.ModelResource):
     class Meta:
         model = Mpikambana
-        fields = ('mpiangona__anarana', 'mpiangona__fanampiny', 'tossaafiko__anarana', 'andraikitra',)
+        fields = ('mpikambana__anarana', 'mpikambana__fanampiny', 'tossaafiko__anarana', 'andraikitra',)
 
 @admin.register(Mpikambana)
 class MpikambanaAdmin(ImportExportModelAdmin):
     resource_classes = [MpikambanaResource]
-    list_display = ['tossaafiko', 'mpiangona', 'andraikitra']
+    list_display = ['tossaafiko', 'mpikambana', 'andraikitra']
     # search_fields = ['tossaafiko', 'mpiangona']
-    list_filter = ['tossaafiko', 'mpiangona', 'andraikitra']
+    list_filter = ['tossaafiko', 'mpikambana', 'andraikitra']
      
      
 
@@ -97,7 +141,30 @@ class TossaafikoAdmin(ImportExportModelAdmin):
     #Activate search field on model
     search_fields = ['anarana']
 
-    
-    
+
+class BatisaResource(resources.ModelResource):
+    class Meta:
+        model = Batisa
+        fields = ('anarana__anarana', 'anarana_fanampy', 'daty_nanolorana', 'daty_batisa')
+
+@admin.register(Batisa)
+class BatisaAdmin(ImportExportModelAdmin):
+    resource_classes = [BatisaResource]
+    list_display = ['anarana', 'daty_nanolorana', 'daty_batisa']
+    search_fields = ['anarana__anarana', 'anarana__fanampiny', 'daty_nanolorana', 'daty_batisa']
+
+
+class KatekomenaResource(resources.ModelResource):
+    class Meta:
+        model: Katekomena
+        fields = ['anarana','daty_nidirana','daty_nivoahana', 'andiany','fiangonana', 'firenena' ]
+
+@admin.register(Katekomena)
+class KatekomenaAdmin(ImportExportModelAdmin):
+    # exclude = ['paid']
+    resource_classes = [KatekomenaResource]
+    list_display = ['anarana','daty_nidirana','daty_nivoahana', 'andiany','fiangonana', 'firenena' ]
+    search_fields = ['anarana','daty_nidirana','daty_nivoahana', 'andiany','fiangonana', 'firenena' ]
+    list_filter = ['anarana', 'andiany','fiangonana', 'firenena' ]
 # admin.site.register(Ankohonana, AnkohonanaAdmin)
 
