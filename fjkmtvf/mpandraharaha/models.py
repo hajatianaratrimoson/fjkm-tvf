@@ -64,9 +64,9 @@ class Ankohonana(models.Model):
    
     anarana = models.CharField(max_length=50, blank=True, null=True, help_text="Anaran'ny raim-pianakaviana")
     fokotany = models.CharField(max_length=50, blank=True, null=True, help_text="Anaran'ny raim-pianakaviana")
-    faritra = models.CharField(max_length=8, blank=True, null=True, help_text="faritra misy ny toerana hipetrahan'ny ankohonana")
-    faritra_tvf = models.CharField(max_length=8, blank=True, null=True, help_text="faritra misy ny toerana hipetrahan'ny ankohonana nofaritan'ny TVF")
-    firenena = models.CharField(max_length=8, blank=True, null=True, help_text="Firenena misy azy ankehitriny")
+    faritra = models.CharField(max_length=25, blank=True, null=True, help_text="faritra misy ny toerana hipetrahan'ny ankohonana")
+    faritra_tvf = models.CharField(max_length=25, blank=True, null=True, help_text="faritra misy ny toerana hipetrahan'ny ankohonana nofaritan'ny TVF")
+    firenena = models.CharField(max_length=25, blank=True, null=True, help_text="Firenena misy azy ankehitriny")
     
     
     

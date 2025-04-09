@@ -57,9 +57,9 @@ class KatekomenaAdminInline(admin.TabularInline):
     extra = 0 # Reset Default Count = 3
     verbose_name =['Katekomena'] # Rename Tab Title
     verbose_name_plural = "Katekomena" # Plural rename tab Title
-    readonly_fields = ['anarana','andiany', 'daty_nidirana', 'daty_nivoahana', 'fiangonana', 'firenena'] # ReadOnly
+    readonly_fields = ['anarana','andiany', 'daty_nidirana','sata', 'daty_nivoahana', 'fiangonana', 'firenena'] # ReadOnly
     # general_tab = "ankohonana"
-    fields = ['anarana','andiany', 'daty_nidirana','daty_nivoahana', 'fiangonana', 'firenena']
+    fields = ['anarana','andiany', 'daty_nidirana','sata','daty_nivoahana', 'fiangonana', 'firenena']
 
 
 class MpiangonaResource(resources.ModelResource):
@@ -120,10 +120,10 @@ class AnkohonanaAdmin(ImportExportModelAdmin):
     inlines = [MpiangonaAdminInline]
     #exclude field mentionned
     # exclude=['ankid']
-    list_display = ['anarana','faritra']
+    list_display = ['anarana','faritra_tvf', 'fokotany', 'faritra', 'firenena']
     #Activate search field on model 
     # search_fields = ['anarana', 'faritra']
-    list_filter = ['anarana', 'faritra']
+    list_filter = ['anarana','faritra_tvf', 'fokotany', 'faritra', 'firenena']
 
 
 class TossaafikoResource(resources.ModelResource):
@@ -157,14 +157,14 @@ class BatisaAdmin(ImportExportModelAdmin):
 class KatekomenaResource(resources.ModelResource):
     class Meta:
         model: Katekomena
-        fields = ['anarana','daty_nidirana','daty_nivoahana', 'andiany','fiangonana', 'firenena' ]
+        fields = ['anarana','daty_nidirana','sata','daty_nivoahana', 'andiany','fiangonana', 'firenena' ]
 
 @admin.register(Katekomena)
 class KatekomenaAdmin(ImportExportModelAdmin):
     # exclude = ['paid']
     resource_classes = [KatekomenaResource]
-    list_display = ['anarana','daty_nidirana','daty_nivoahana', 'andiany','fiangonana', 'firenena' ]
-    search_fields = ['anarana','daty_nidirana','daty_nivoahana', 'andiany','fiangonana', 'firenena' ]
-    list_filter = ['anarana', 'andiany','fiangonana', 'firenena' ]
+    list_display = ['anarana','daty_nidirana','sata','daty_nivoahana', 'andiany','fiangonana', 'firenena' ]
+    search_fields = ['anarana','daty_nidirana','sata','daty_nivoahana', 'andiany','fiangonana', 'firenena' ]
+    list_filter = ['anarana', 'andiany','sata','fiangonana', 'firenena' ]
 # admin.site.register(Ankohonana, AnkohonanaAdmin)
 
