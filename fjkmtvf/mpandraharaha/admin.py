@@ -1,5 +1,5 @@
 from django.contrib import admin
-from mpandraharaha.models import Mpiangona, Mpandray,Ankohonana, Tossaafiko, Mpikambana, Batisa, Katekomena
+from mpandraharaha.models import Mpiangona, Mpandray,Ankohonana, Tossaafiko, Mpikambana, Batisa, Katekomena, Mariazy
 from django.contrib.auth.admin import UserAdmin
 from import_export.admin import ImportExportModelAdmin, ExportActionMixin
 from import_export.widgets import ForeignKeyWidget
@@ -166,5 +166,20 @@ class KatekomenaAdmin(ImportExportModelAdmin):
     list_display = ['anarana','daty_nidirana','sata','daty_nivoahana', 'andiany','fiangonana', 'firenena' ]
     search_fields = ['anarana','daty_nidirana','sata','daty_nivoahana', 'andiany','fiangonana', 'firenena' ]
     list_filter = ['anarana', 'andiany','sata','fiangonana', 'firenena' ]
+
+
+
+class MariazyResource(resources.ModelResource):
+    class Meta:
+        model: Mariazy
+        # fields = ['lahy','vavy','sata','daty_nivoahana', 'andiany','fiangonana', 'firenena' ]
+
+@admin.register(Mariazy)
+class MariazyaAdmin(ImportExportModelAdmin):
+    # exclude = ['paid']
+    resource_classes = [MariazyResource]
+    list_display = ['lahy','vavy','daty_sivily','kaominina','daty_fiangonana', 'fiangonana', 'firenena' ]
+    search_fields = ['lahy','vavy','daty_sivily','kaominina','daty_fiangonana', 'fiangonana', 'firenena' ]
+    list_filter = ['lahy','vavy','kaominina', 'fiangonana', 'firenena' ]
 # admin.site.register(Ankohonana, AnkohonanaAdmin)
 

@@ -182,4 +182,21 @@ class Katekomena(models.Model):
     
     def __str__(self):
         return f"{self.anarana}"
+
+
+class Mariazy(models.Model):
+    lahy = models.ForeignKey(Mpiangona, related_name="mpiangona_lahy", on_delete=models.SET_NULL, null=True, blank=True, verbose_name="Anaran'ny lahy" )
+    vavy = models.ForeignKey(Mpiangona, related_name="mpiangona_vavy", on_delete=models.SET_NULL, null=True, blank=True, verbose_name="Anaran'ny vavy" )
+    
+    daty_sivily = models.DateField(verbose_name="Daty sivily", default=datetime.now, null=True, blank=True)
+    kaominina = models.CharField(max_length=50, help_text="Kaominina", null=True, blank=True)
+    daty_fiangonana = models.DateField(verbose_name="Daty Fiangonana", default=datetime.now, null=True, blank=True)
+    fiangonana = models.CharField(max_length=25, help_text="Fiangonana", null=True, blank=True)
+    firenena = models.CharField(max_length=25, help_text="Firenena namoahana azy", null=True, blank=True)
+    
+    class Meta:
+        verbose_name_plural = "Mariazy"
+    
+    def __str__(self):
+        return f"{self.lahy} {self.vavy}"
    
