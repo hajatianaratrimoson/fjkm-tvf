@@ -1,0 +1,5 @@
+2025-04-12 00:37:27,600 : DEBUG - La fonction a bien été exécutée
+2025-04-12 00:37:27,600 : INFO - Message d'information général
+2025-04-12 00:37:27,600 : WARNING - attention !
+2025-04-12 00:37:27,600 : ERROR - Une erreur est arrivée
+2025-04-12 00:37:27,600 : CRITICAL - Erreur critique

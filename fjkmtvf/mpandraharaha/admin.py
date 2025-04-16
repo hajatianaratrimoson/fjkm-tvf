@@ -26,9 +26,9 @@ class MpikambanaAdminInline(admin.TabularInline):
     extra = 0 # Reset Default Count = 3
     verbose_name =['Mpikambana'] # Rename Tab Title
     verbose_name_plural = "Tossaafiko" # Plural rename tab Title
-    readonly_fields = ['mpikambana','tossaafiko', 'andraikitra'] # ReadOnly
+    readonly_fields = ['mpikambana','tossaafiko', 'andraikitra', 'taona'] # ReadOnly
     # general_tab = "ankohonana"
-    fields = ['mpikambana','tossaafiko', 'andraikitra']
+    fields = ['mpikambana','tossaafiko', 'andraikitra', 'taona']
     # radio_fields = {"ankohonana": admin.HORIZONTAL}
 
 class MpandrayAdminInline(admin.TabularInline):
@@ -98,14 +98,14 @@ class MpandrayAdmin(ImportExportModelAdmin):
 class MpikambanaResource(resources.ModelResource):
     class Meta:
         model = Mpikambana
-        fields = ('mpikambana__anarana', 'mpikambana__fanampiny', 'tossaafiko__anarana', 'andraikitra',)
+        fields = ('mpikambana__anarana', 'mpikambana__fanampiny', 'tossaafiko__anarana', 'andraikitra', 'taona')
 
 @admin.register(Mpikambana)
 class MpikambanaAdmin(ImportExportModelAdmin):
     resource_classes = [MpikambanaResource]
-    list_display = ['tossaafiko', 'mpikambana', 'andraikitra']
+    list_display = ['tossaafiko', 'mpikambana', 'andraikitra', 'taona']
     # search_fields = ['tossaafiko', 'mpiangona']
-    list_filter = ['tossaafiko', 'mpikambana', 'andraikitra']
+    list_filter = ['tossaafiko', 'mpikambana', 'andraikitra', 'taona']
      
      
 

@@ -7,6 +7,11 @@ from ckeditor_uploader.fields import RichTextUploadingField
 from django.core.validators import RegexValidator
 from datetime import datetime
 
+
+TAONA_PIASANA = (
+    ("2020-2024", "2020-2024"),
+    ("2025-2028", "2025-2028"),
+)
 SATA = (
     ("mianatra", "Mianatra"),
     ("mpandray", "Mpandray"),
@@ -130,7 +135,7 @@ class Mpikambana(models.Model):
     mpikambana = models.ForeignKey(Mpiangona, related_name='mpikambana', on_delete=models.SET_NULL, null=True)
     tossaafiko = models.ForeignKey(Tossaafiko, related_name='tossaafiko', on_delete=models.SET_NULL, null=True)
     andraikitra = models.CharField(max_length=18,choices=ANDRAIKITRA, help_text="Andraikitra ao amin'ny Tossaafiko")
-    
+    taona = models.CharField(max_length=15, blank=True,  choices=TAONA_PIASANA, verbose_name='Taom-piasana', help_text='Mandat')
     class Meta:
         verbose_name_plural = "Mpikambana" 
         
