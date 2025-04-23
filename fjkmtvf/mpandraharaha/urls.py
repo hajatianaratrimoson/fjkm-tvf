@@ -4,7 +4,6 @@ from django.urls import path
 app_name = "mpandraharaha"
 
 urlpatterns = [
-    
     #Homepage
     # path("", index, name="index"),
     

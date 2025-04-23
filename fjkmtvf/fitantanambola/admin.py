@@ -1,5 +1,5 @@
 from django.contrib import admin
-from fitantanambola.models import Rafitra, Kaonty, Laminasa, Diarimbola, Ded
+from fitantanambola.models import Rafitra, KaontyTvf, KaontyTossaafiko, Laminasa, Diarimbola, JournalCaisse
 from django.contrib.auth.admin import UserAdmin
 from import_export.admin import ImportExportModelAdmin, ExportActionMixin
 # from import_export.widgets import ForeignKeyWidget
@@ -9,54 +9,8 @@ from guardian.shortcuts import get_objects_for_user
 
 
 
-class RafitraResource(resources.ModelResource):
-    class Meta:
-        model = Rafitra
-        # fields = ['axe', 'fanamarihana']
-
-@admin.register(Rafitra)
-class RafitraAdmin(ImportExportModelAdmin):
-    resource_classes = [RafitraResource]
-    # inlines = [BatisaAdminInline,KatekomenaAdminInline, MpandrayAdminInline, MpikambanaAdminInline ]
-    
-    list_display = ['axe', 'fanamarihana']
-    list_filter = ['axe', 'fanamarihana']
-    
-    #Activate search field on model
-    search_fields = ['axe', 'fanamarihana']
-
-
-class KaontyResource(resources.ModelResource):
-    class Meta:
-        model = Kaonty
-        # fields = ['isa', 'anarana', 'rafitra__axe']
-
-@admin.register(Kaonty)
-class KaontyAdmin(ImportExportModelAdmin):
-    resource_classes = [KaontyResource]
-    
-    list_display = ['isa', 'anarana', 'rafitra']
-    list_filter = ['isa', 'anarana', 'rafitra']
-    
-    #Activate search field on model
-    search_fields = ['isa', 'anarana', 'rafitra']
-
-
-class LaminasaResource(resources.ModelResource):
-    class Meta:
-        model = Laminasa
-        # fields = ['tossaafiko__anarana', 'daty', 'asa', 'toerana', 'fanamarihana']
-
-@admin.register(Laminasa)
-class LaminasaAdmin(GuardedModelAdmin, ImportExportModelAdmin):
-    # resource_classes = [LaminasaResource]
-   
-    list_display = ['tossaafiko', 'daty', 'asa', 'toerana', 'fanamarihana']
-    list_filter = ['tossaafiko', 'asa', 'toerana', 'fanamarihana']
-    
-    #Activate search field on model
-    search_fields = ['tossaafiko', 'daty', 'asa', 'toerana', 'fanamarihana']
-    
+class FilterByUserAuth(GuardedModelAdmin):
+    # pass
     def has_module_permission(self, request):
         if super().has_module_permission(request):
             return True
@@ -72,7 +26,7 @@ class LaminasaAdmin(GuardedModelAdmin, ImportExportModelAdmin):
     
     def get_model_objects(self, request, action=None, klass=None):
         opts = self.opts
-        action =[action] if action else ['view', 'edit', 'delete']
+        action =[action] if action else ['add','view', 'edit', 'delete']
         klass = klass if klass else opts.model
         model_name = klass._meta.model_name
         return get_objects_for_user(user=request.user, perms=[f'{perm}_{model_name}' for perm in action], klass=klass, any_perm=True)
@@ -97,6 +51,72 @@ class LaminasaAdmin(GuardedModelAdmin, ImportExportModelAdmin):
     
     def has_delete_permission(self, request, obj = None):
         return self.has_permission(request, obj, 'delete')
+    
+
+class RafitraResource(resources.ModelResource):
+    class Meta:
+        model = Rafitra
+        # fields = ['axe', 'fanamarihana']
+
+@admin.register(Rafitra)
+class RafitraAdmin(ImportExportModelAdmin):
+    resource_classes = [RafitraResource]
+    # inlines = [BatisaAdminInline,KatekomenaAdminInline, MpandrayAdminInline, MpikambanaAdminInline ]
+    
+    list_display = ['axe', 'fanamarihana']
+    list_filter = ['axe', 'fanamarihana']
+    
+    #Activate search field on model
+    search_fields = ['axe', 'fanamarihana']
+
+
+class KaontyTvfResource(resources.ModelResource):
+    class Meta:
+        model = KaontyTvf
+        # fields = ['isa', 'anarana', 'rafitra__axe']
+
+@admin.register(KaontyTvf)
+class KaontyTvfAdmin(ImportExportModelAdmin):
+    resource_classes = [KaontyTvfResource]
+    
+    list_display = ['isa', 'anarana', 'rafitra']
+    list_filter = ['isa', 'anarana', 'rafitra']
+    
+    #Activate search field on model
+    search_fields = ['isa', 'anarana', 'rafitra']
+
+
+class KaontyTossaafikoResource(resources.ModelResource):
+    class Meta:
+        model = KaontyTossaafiko
+        # fields = ['isa', 'anarana', 'rafitra__axe']
+
+@admin.register(KaontyTossaafiko)
+class KaontyTossaafikoAdmin(ImportExportModelAdmin):
+    resource_classes = [KaontyTossaafikoResource]
+    
+    list_display = ['tossaafiko', 'kaontytvf','isa', 'anarana']
+    list_filter = ['tossaafiko', 'kaontytvf', 'isa', 'anarana']
+    
+    #Activate search field on model
+    search_fields = ['tossaafiko', 'kaontytvf',  'isa', 'anarana']
+
+class LaminasaResource(resources.ModelResource):
+    class Meta:
+        model = Laminasa
+        # fields = ['tossaafiko__anarana', 'daty', 'asa', 'toerana', 'fanamarihana']
+
+@admin.register(Laminasa)
+class LaminasaAdmin(FilterByUserAuth, ImportExportModelAdmin):
+    # resource_classes = [LaminasaResource]
+   
+    list_display = ['taona','tossaafiko','diarimbola', 'daty', 'asa', 'toerana', 'fanamarihana', 'tombana']
+    list_filter = ['taona','tossaafiko', 'diarimbola','daty', 'asa', 'toerana', 'fanamarihana', 'tombana']
+    
+    #Activate search field on model
+    search_fields = ['taona','tossaafiko','diarimbola', 'daty', 'asa', 'toerana', 'fanamarihana', 'tombana']
+    
+    
 
 class DiarimbolaResource(resources.ModelResource):
     class Meta:
@@ -104,28 +124,57 @@ class DiarimbolaResource(resources.ModelResource):
         # fields = [ 'kaonty', 'vola', 'fanamarihana']
 
 @admin.register(Diarimbola)
-class DiarimbolaAdmin(ImportExportModelAdmin):
+class DiarimbolaAdmin(FilterByUserAuth, ImportExportModelAdmin):
     resource_classes = [DiarimbolaResource]
     
-    list_display = ['kaonty','vola','fanamarihana']
-    list_filter = ['kaonty',  'vola','fanamarihana']
+    list_display = ['taona','tossaafiko','kaonty','vola_holaniana','vola_lany','vola_ambiny','ecart','fanamarihana']
+    list_filter = ['taona','tossaafiko','kaonty','vola_holaniana','vola_lany','vola_ambiny','ecart','fanamarihana']
     
     #Activate search field on model
-    search_fields = ['kaonty', 'fanamarihana', 'vola']
+    search_fields = ['taona','tossaafiko','kaonty','vola_holaniana','vola_lany','vola_ambiny','ecart','fanamarihana']
 
-
-
-class DedResource(resources.ModelResource):
+class JournalCaisseResource(resources.ModelResource):
     class Meta:
-        model = Ded
-        # fields = ['num_ded', 'daty_ded', 'tossaafiko', 'laminasa','diarimbola', 'fandaniana', 'sata']
+        model = JournalCaisse
+        # fields = ['tossaafiko__anarana', 'daty', 'asa', 'toerana', 'fanamarihana']
 
-@admin.register(Ded)
-class DedAdmin(ImportExportModelAdmin):
-    resource_classes = [DedResource]
-    
-    list_display = [ 'mpitantsorabola','num_ded', 'daty_ded', 'tossaafiko', 'laminasa','diarimbola', 'fandaniana', 'sata']
-    list_filter = [ 'mpitantsorabola', 'num_ded', 'tossaafiko', 'laminasa','diarimbola', 'fandaniana', 'sata' ]
+@admin.register(JournalCaisse)
+class JournalCaisseAdmin(FilterByUserAuth, ImportExportModelAdmin):
+    resource_classes = [JournalCaisseResource]
+   
+    list_display = ['daty','taona','tossaafiko','diarimbola', 'miditra', 'mivoaka', 'ded','pj_ded', 'edr', 'pj_edr','solde','fanamarihana']
+    list_filter = ['taona','tossaafiko','diarimbola', 'miditra', 'mivoaka', 'ded','pj_ded', 'edr', 'pj_edr','solde','fanamarihana']
     
     #Activate search field on model
-    search_fields = ['mpitantsorabola', 'num_ded', 'daty_ded', 'tossaafiko', 'laminasa','diarimbola', 'fandaniana', 'sata' ]
+    search_fields = ['daty','tossaafiko','diarimbola', 'daty', 'miditra', 'mivoaka', 'ded','pj_ded', 'edr', 'pj_edr','solde','fanamarihana']
+
+# class DedResource(resources.ModelResource):
+#     class Meta:
+#         model = Ded
+#         # fields = ['num_ded', 'daty_ded', 'tossaafiko', 'laminasa','diarimbola', 'fandaniana', 'sata']
+
+# @admin.register(Ded)
+# class DedAdmin(FilterByUserAuth, ImportExportModelAdmin):
+#     resource_classes = [DedResource]
+    
+#     list_display = [ 'mpitantsorabola','num_ded', 'daty_ded', 'tossaafiko', 'laminasa','diarimbola', 'fandaniana', 'sata']
+#     list_filter = [ 'mpitantsorabola', 'num_ded', 'tossaafiko', 'laminasa','diarimbola', 'fandaniana', 'sata' ]
+    
+#     #Activate search field on model
+#     search_fields = ['mpitantsorabola', 'num_ded', 'daty_ded', 'tossaafiko', 'laminasa','diarimbola', 'fandaniana', 'sata' ]
+    
+
+# class FanamarinanaDedResource(resources.ModelResource):
+#     class Meta:
+#         model = Fanamarinana_ded
+#         # fields = ['isa', 'anarana', 'rafitra__axe']
+
+# @admin.register(Fanamarinana_ded)
+# class KaontyAdmin(ImportExportModelAdmin):
+#     resource_classes = [FanamarinanaDedResource]
+    
+#     list_display = ['tossaafiko','ded', 'mpanamarina_birao_ssa', 'mpanamarina_toby', 'mpanamarina_birao_tvf']
+#     list_filter = ['tossaafiko', 'ded', 'mpanamarina_birao_ssa', 'mpanamarina_toby', 'mpanamarina_birao_tvf']
+    
+#     #Activate search field on model
+#     search_fields = ['tossaafiko', 'ded', 'mpanamarina_birao_ssa', 'mpanamarina_toby', 'mpanamarina_birao_tvf']
