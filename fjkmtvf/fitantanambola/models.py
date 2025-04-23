@@ -132,6 +132,10 @@ def diarimbola_post_save(sender, instance, *args, **kwargs):
     
     Diarimbola.objects.filter(id=instance.diarimbola.id).update(vola_holaniana=tombana, vola_ambiny=tombana)
 
+@receiver(pre_save, sender=JournalCaisse)
+def diarimbola_journal_post_save(sender, instance, *args, **kwargs):
+        pass
+    
     
 @receiver(post_save, sender=JournalCaisse)
 def diarimbola_journal_post_save(sender, instance, *args, **kwargs):
@@ -149,23 +153,33 @@ def diarimbola_journal_post_save(sender, instance, *args, **kwargs):
             else:
                 solde = j.solde
                 tossaafiko = j.tossaafiko.anarana
-    
-        if instance.miditra:
-            solde += instance.miditra
-            vola_ambiny = diarimbola.vola_ambiny
-        if instance.mivoaka:
-            solde -= instance.mivoaka
-            vola_lany = diarimbola.vola_lany + instance.mivoaka 
-            if diarimbola.vola_ambiny == 0:
-                vola_ambiny = diarimbola.vola_holaniana - instance.mivoaka
-            else:    
+        if instance.fanamarihana == 'annulation':
+            print('annulation')
+            if instance.miditra != 0:
+                solde += instance.miditra
+                vola_ambiny = diarimbola.vola_ambiny + instance.miditra
+            if instance.mivoaka != 0:
+                solde -= instance.mivoaka
+                vola_lany = diarimbola.vola_lany + instance.mivoaka 
                 vola_ambiny = diarimbola.vola_ambiny - instance.mivoaka
-        
+                if diarimbola.vola_ambiny == 0:
+                    vola_ambiny = diarimbola.vola_holaniana + instance.mivoaka
+                else:    
+                    vola_ambiny = diarimbola.vola_ambiny + instance.mivoaka
+        else:
+              if instance.miditra:
+                solde += instance.miditra
+                vola_ambiny = diarimbola.vola_ambiny
+              if instance.mivoaka:
+                solde -= instance.mivoaka
+                vola_lany = diarimbola.vola_lany + instance.mivoaka 
+              if diarimbola.vola_ambiny == 0:
+                vola_ambiny = diarimbola.vola_holaniana - instance.mivoaka
+              else:    
+                vola_ambiny = diarimbola.vola_ambiny - instance.mivoaka
         JournalCaisse.objects.filter(id=instance.id).update(solde=solde) 
         Diarimbola.objects.filter(id=instance.diarimbola.id).update(vola_lany=vola_lany, vola_ambiny=vola_ambiny)
         
-
-    pre_save
     
    
     
