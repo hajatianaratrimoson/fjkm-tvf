@@ -139,7 +139,7 @@ def diarimbola_journal_post_save(sender, instance, *args, **kwargs):
     
 @receiver(post_save, sender=JournalCaisse)
 def diarimbola_journal_post_save(sender, instance, *args, **kwargs):
-    journalcaisse = JournalCaisse.objects.filter(tossaafiko=instance.tossaafiko, diarimbola=instance.diarimbola).order_by('daty')
+    journalcaisse = JournalCaisse.objects.filter(tossaafiko=instance.tossaafiko, diarimbola=instance.diarimbola).order_by('-id')
     diarimbola = Diarimbola.objects.get(kaonty=instance.diarimbola.kaonty, tossaafiko=instance.diarimbola.tossaafiko)
     solde = 0
     vola_ambiny = 0
@@ -147,12 +147,12 @@ def diarimbola_journal_post_save(sender, instance, *args, **kwargs):
     
     if journalcaisse:
         for j in journalcaisse:
-            if j.solde is None or j.solde == 0:
+            print('solde init:', j.solde )
+            if j.solde is not None or j.solde == 0:
                 tossaafiko = j.tossaafiko.anarana
-                break
-            else:
                 solde = j.solde
-                tossaafiko = j.tossaafiko.anarana
+                break
+
         if instance.fanamarihana == 'annulation':
             print('annulation')
             if instance.miditra != 0:
@@ -160,17 +160,18 @@ def diarimbola_journal_post_save(sender, instance, *args, **kwargs):
                 vola_ambiny = diarimbola.vola_ambiny + instance.miditra
             if instance.mivoaka != 0:
                 solde -= instance.mivoaka
-                vola_lany = diarimbola.vola_lany + instance.mivoaka 
-                vola_ambiny = diarimbola.vola_ambiny - instance.mivoaka
-                if diarimbola.vola_ambiny == 0:
-                    vola_ambiny = diarimbola.vola_holaniana + instance.mivoaka
-                else:    
-                    vola_ambiny = diarimbola.vola_ambiny + instance.mivoaka
+                vola_lany = diarimbola.vola_lany
+                vola_ambiny = diarimbola.vola_holaniana
+               
+                    
+               
         else:
-              if instance.miditra:
+              if instance.miditra != 0:
+                print('solde after =', solde)
                 solde += instance.miditra
                 vola_ambiny = diarimbola.vola_ambiny
-              if instance.mivoaka:
+                print('Solde after after : ', solde, instance.miditra)
+              if instance.mivoaka != 0:
                 solde -= instance.mivoaka
                 vola_lany = diarimbola.vola_lany + instance.mivoaka 
               if diarimbola.vola_ambiny == 0:

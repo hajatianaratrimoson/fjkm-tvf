@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'ckeditor',
     'import_export',
     'guardian',
+    'rangefilter',
     
         #app 
     'mpandraharaha',
@@ -220,11 +221,20 @@ JAZZMIN_SETTINGS = {
    "icons": {
         "mpandraharaha.Mpandray": "fas fa-users-cog",
         "mpandraharaha.Ankohonana": "fas fa-user",
-        "mpandraharaha.Mpiangona": "fas fa-users",
-        "mpandraharaha.Mpikambana": "fas fa-users",
+        "mpandraharaha.Mpiangona": "fas fa-pray",
+        "mpandraharaha.Mpikambana": "fas fa-user-friends",
         "mpandraharaha.Tossaafiko": "fas fa-users",
-        "mpandraharaha.Batisa": "fas fa-user",
-        "mpandraharaha.Katekomena": "fas fa-user",
+        "mpandraharaha.Batisa": "fas fa-graduation-cap",
+        "mpandraharaha.Katekomena": "fas fa-user-graduate",
+        "mpandraharaha.Mariazy": "fas fa-venus-mars",
+        
+        "fitantanambola.Diarimbola":"far fa-address-book",
+        "fitantanambola.JournalCaisse":"fas fa-balance-scale",
+        "fitantanambola.KaontyTvf":"fas fa-chart-pie",
+        "fitantanambola.KaontyTossaafiko":"fas fa-piggy-bank",
+        "fitantanambola.Laminasa":"fas fa-hand-holding-usd",
+        "fitantanambola.Rafitra":"fas fa-landmark",
+        
    },
    
     "related_modal_active": True,

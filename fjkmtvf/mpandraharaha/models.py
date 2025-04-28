@@ -67,7 +67,7 @@ def user_directory_path(instance, filename):
 class Ankohonana(models.Model):
     # ankid = ShortUUIDField(unique=True, length=10, max_length=30, prefix="pad", alphabet="abcdefgh12345")
    
-    anarana = models.CharField(max_length=50, blank=True, null=True, help_text="Anaran'ny raim-pianakaviana")
+    anarana = models.CharField(max_length=50, blank=True, null=True, help_text="Anaran'ny raim-pianakaviana", unique=True)
     fokotany = models.CharField(max_length=50, blank=True, null=True, help_text="Anaran'ny raim-pianakaviana")
     faritra = models.CharField(max_length=25, blank=True, null=True, help_text="faritra misy ny toerana hipetrahan'ny ankohonana")
     faritra_tvf = models.CharField(max_length=25, blank=True, null=True, help_text="faritra misy ny toerana hipetrahan'ny ankohonana nofaritan'ny TVF")

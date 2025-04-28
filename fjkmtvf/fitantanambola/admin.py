@@ -1,3 +1,4 @@
+import datetime
 from django.contrib import admin
 from fitantanambola.models import Rafitra, KaontyTvf, KaontyTossaafiko, Laminasa, Diarimbola, JournalCaisse
 from django.contrib.auth.admin import UserAdmin
@@ -6,6 +7,9 @@ from import_export.admin import ImportExportModelAdmin, ExportActionMixin
 from import_export import resources, fields
 from guardian.admin import GuardedModelAdmin
 from guardian.shortcuts import get_objects_for_user
+from rangefilter.filters import DateRangeFilter, DateTimeRangeFilter, NumericRangeFilter
+
+
 
 
 
@@ -39,18 +43,18 @@ class FilterByUserAuth(GuardedModelAdmin):
         else:
             return True
         
-    def has_add_permission(self, request, obj = None):
-        return self.has_permission(request, obj, 'add')
+    # def has_add_permission(self, request, obj = None):
+    #     return self.has_permission(request, obj, 'add')
     
     
-    def has_view_permission(self, request, obj = None):
-        return self.has_permission(request, obj, 'view')    
+    # def has_view_permission(self, request, obj = None):
+    #     return self.has_permission(request, obj, 'view')    
     
-    def has_change_permission(self, request, obj = None):
-        return self.has_permission(request, obj, 'change')
+    # def has_change_permission(self, request, obj = None):
+    #     return self.has_permission(request, obj, 'change')
     
-    def has_delete_permission(self, request, obj = None):
-        return self.has_permission(request, obj, 'delete')
+    # def has_delete_permission(self, request, obj = None):
+    #     return self.has_permission(request, obj, 'delete')
     
 
 class RafitraResource(resources.ModelResource):
@@ -111,8 +115,13 @@ class LaminasaAdmin(FilterByUserAuth, ImportExportModelAdmin):
     # resource_classes = [LaminasaResource]
    
     list_display = ['taona','tossaafiko','diarimbola', 'daty', 'asa', 'toerana', 'fanamarihana', 'tombana']
-    list_filter = ['taona','tossaafiko', 'diarimbola','daty', 'asa', 'toerana', 'fanamarihana', 'tombana']
+    list_filter = ['taona', 'diarimbola','tossaafiko', 'asa',('daty', DateRangeFilter)]
+ 
     
+    # def get_rangefilter_daty_default(self, request):
+    #     return (datetime.date.today, datetime.date.today)
+    # def get_rangefilter_daty_title(self, request, field_path):
+    #     return 'Daty1 daty2'
     #Activate search field on model
     search_fields = ['taona','tossaafiko','diarimbola', 'daty', 'asa', 'toerana', 'fanamarihana', 'tombana']
     
@@ -143,7 +152,7 @@ class JournalCaisseAdmin(FilterByUserAuth, ImportExportModelAdmin):
     resource_classes = [JournalCaisseResource]
    
     list_display = ['daty','taona','tossaafiko','diarimbola', 'miditra', 'mivoaka', 'ded','pj_ded', 'edr', 'pj_edr','solde','fanamarihana']
-    list_filter = ['taona','tossaafiko','diarimbola', 'miditra', 'mivoaka', 'ded','pj_ded', 'edr', 'pj_edr','solde','fanamarihana']
+    list_filter = ['taona','tossaafiko','diarimbola', 'ded', 'edr',('daty', DateRangeFilter)]
     
     #Activate search field on model
     search_fields = ['daty','tossaafiko','diarimbola', 'daty', 'miditra', 'mivoaka', 'ded','pj_ded', 'edr', 'pj_edr','solde','fanamarihana']
