@@ -158,10 +158,18 @@ def diarimbola_journal_post_save(sender, instance, *args, **kwargs):
             if instance.miditra != 0:
                 solde += instance.miditra
                 vola_ambiny = diarimbola.vola_ambiny + instance.miditra
+                vola_lany = diarimbola.vola_lany
             if instance.mivoaka != 0:
                 solde -= instance.mivoaka
                 vola_lany = diarimbola.vola_lany
-                vola_ambiny = diarimbola.vola_holaniana
+                vola_ambiny = diarimbola.vola_ambiny
+                
+        if instance.fanamarihana == 'reliquat':
+            print('reliquat')
+            if instance.mivoaka != 0:
+                solde -= instance.mivoaka
+                vola_lany = diarimbola.vola_lany
+                vola_ambiny = diarimbola.vola_ambiny
                
                     
                
@@ -170,6 +178,7 @@ def diarimbola_journal_post_save(sender, instance, *args, **kwargs):
                 print('solde after =', solde)
                 solde += instance.miditra
                 vola_ambiny = diarimbola.vola_ambiny
+                vola_lany = diarimbola.vola_lany
                 print('Solde after after : ', solde, instance.miditra)
               if instance.mivoaka != 0:
                 solde -= instance.mivoaka
@@ -178,8 +187,12 @@ def diarimbola_journal_post_save(sender, instance, *args, **kwargs):
                 vola_ambiny = diarimbola.vola_holaniana - instance.mivoaka
               else:    
                 vola_ambiny = diarimbola.vola_ambiny - instance.mivoaka
+        if vola_lany != 0 or diarimbola.vola_holaniana != 0:
+            ecart = (vola_lany / diarimbola.vola_holaniana) * 100
+        else:
+            ecart = 0   
         JournalCaisse.objects.filter(id=instance.id).update(solde=solde) 
-        Diarimbola.objects.filter(id=instance.diarimbola.id).update(vola_lany=vola_lany, vola_ambiny=vola_ambiny)
+        Diarimbola.objects.filter(id=instance.diarimbola.id).update(vola_lany=vola_lany, vola_ambiny=vola_ambiny, ecart=ecart)
         
     
    
