@@ -17,9 +17,11 @@ AXE = (
 )
 
 SATA = (
-    ("en_cours", "En cours"),
-    ("valide", "Validé"),  
+    ("reliquat", "reliquat"),
+    ("annulation", "annulation")
 )
+
+
 
 def get_current_user():
     for frame_record in inspect.stack():
@@ -132,7 +134,8 @@ class JournalCaisse(models.Model):
     edr = models.CharField(max_length=4, blank=True, null=True)
     pj_edr = models.ImageField(upload_to='pieces', null=True, blank=True)
     solde = models.IntegerField(blank=True, null=True)
-    fanamarihana = models.CharField(max_length=200, blank=True, null=True)
+    fanamarihana = models.CharField(max_length=200, blank=True, null=True, choices=SATA, verbose_name="Sata")
+    fanamarihana_1 = models.CharField(max_length=200, blank=True, null=True, verbose_name="Fanamarihana")
     
 
     class Meta:
