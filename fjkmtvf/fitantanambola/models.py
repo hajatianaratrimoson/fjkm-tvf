@@ -168,20 +168,26 @@ def diarimbola_journal_post_save(sender, instance, *args, **kwargs):
     
 @receiver(post_save, sender=JournalCaisse)
 def diarimbola_journal_post_save(sender, instance, *args, **kwargs):
-    journalcaisse = JournalCaisse.objects.filter(tossaafiko=instance.tossaafiko, diarimbola=instance.diarimbola).order_by('-id')
+    journalcaisse = JournalCaisse.objects.filter(tossaafiko=instance.tossaafiko).order_by('-id')
     diarimbola = Diarimbola.objects.get(kaonty=instance.diarimbola.kaonty, tossaafiko=instance.diarimbola.tossaafiko)
     solde = 0
     vola_ambiny = 0
     vola_lany = 0
     
+    print('instance diarimbola ==', diarimbola.vola_holaniana)
     if journalcaisse:
         for j in journalcaisse:
-            print('solde init:', j.solde )
+            print(j)
+            if j.solde is None:
+                pass
+            print('solde init:', j.solde, j.miditra )
             if j.solde is not None or j.solde == 0:
-                tossaafiko = j.tossaafiko.anarana
                 solde = j.solde
+                print('tafiditra ato ve ')
                 break
-
+            
+        
+        print('j . solde is None', solde)
         if instance.fanamarihana == 'annulation':
             print('annulation')
             if instance.miditra != 0:
@@ -199,9 +205,6 @@ def diarimbola_journal_post_save(sender, instance, *args, **kwargs):
                 solde -= instance.mivoaka
                 vola_lany = diarimbola.vola_lany
                 vola_ambiny = diarimbola.vola_ambiny
-               
-                    
-               
         else:
               if instance.miditra != 0:
                 print('solde after =', solde)
@@ -216,7 +219,8 @@ def diarimbola_journal_post_save(sender, instance, *args, **kwargs):
                 vola_ambiny = diarimbola.vola_holaniana - instance.mivoaka
               else:    
                 vola_ambiny = diarimbola.vola_ambiny - instance.mivoaka
-        if vola_lany != 0 or diarimbola.vola_holaniana != 0:
+        print('diarimbola ==', diarimbola.vola_holaniana)
+        if vola_lany != 0 and diarimbola.vola_holaniana != 0:
             ecart = (vola_lany / diarimbola.vola_holaniana) * 100
         else:
             ecart = 0   
