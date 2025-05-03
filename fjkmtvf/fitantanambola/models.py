@@ -5,7 +5,7 @@ from userauths.models import User
 from shortuuid.django_fields import ShortUUIDField 
 from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
-
+import inspect
     
 
 
@@ -20,6 +20,31 @@ SATA = (
     ("en_cours", "En cours"),
     ("valide", "Validé"),  
 )
+
+def get_current_user():
+    for frame_record in inspect.stack():
+        if frame_record[3] == 'get_response':
+            request = frame_record[0].f_locals['request']
+            break
+        else:
+            request = None
+    return request.user 
+
+def get_current_tossaafiko():
+    for frame_record in inspect.stack():
+        if frame_record[3] == 'get_response':
+            request = frame_record[0].f_locals['request']
+            break
+        else:
+            request = None
+    return request.user.bio
+
+CURRENT_USER = get_current_user 
+TOSSAAFIKO = get_current_tossaafiko
+
+
+
+
 
 # Cadre Logique
 class Rafitra(models.Model):
@@ -45,6 +70,7 @@ class KaontyTvf(models.Model):
         return f"{str(self.isa)} - {self.anarana}"
 
 class KaontyTossaafiko(models.Model):
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, default=CURRENT_USER)
     tossaafiko = models.ForeignKey(Tossaafiko,null=True, related_name="kaonty_tossaafiko", on_delete=models.SET_NULL)
     kaontytvf = models.ForeignKey(KaontyTvf, related_name='kaontytvf', null=True, on_delete=models.SET_NULL)
     isa = models.IntegerField() #Compte
@@ -58,13 +84,14 @@ class KaontyTossaafiko(models.Model):
 
 
 class Diarimbola(models.Model):
-    taona = models.CharField(max_length=4, blank=True, null=True)
-    tossaafiko = models.ForeignKey(Tossaafiko,null=True, related_name="diarimbola_tossaafiko", on_delete=models.SET_NULL)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, default=CURRENT_USER)
+    taona = models.CharField(max_length=4, blank=True, null=True, default=datetime.today().year)
+    tossaafiko = models.ForeignKey(Tossaafiko,null=True, related_name="diarimbola_tossaafiko", on_delete=models.SET_NULL, default=TOSSAAFIKO)
     kaonty = models.ForeignKey(KaontyTossaafiko, null=True,blank=True, related_name="diarimbola_kaonty", on_delete=models.SET_NULL)
     vola_holaniana = models.IntegerField(default=0)
     vola_lany = models.IntegerField(default=0)
     vola_ambiny = models.IntegerField(default=0) 
-    ecart = models.IntegerField(default=0)         
+    ecart = models.IntegerField(default=0, verbose_name=" % Fandaniana ")         
     fanamarihana = models.CharField(max_length=200, blank=True, null=True)
 
     class Meta:
@@ -74,8 +101,9 @@ class Diarimbola(models.Model):
         return f"{self.kaonty.isa} - {self.tossaafiko.anarana}"
     
 class Laminasa(models.Model):
-    taona = models.CharField(max_length=4, blank=True, null=True)
-    tossaafiko = models.ForeignKey(Tossaafiko,null=True, related_name="laminasa_tossaafiko", on_delete=models.SET_NULL)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, default=CURRENT_USER)
+    taona = models.CharField(max_length=4, blank=True, null=True, default=datetime.today().year)
+    tossaafiko = models.ForeignKey(Tossaafiko,null=True, related_name="laminasa_tossaafiko", on_delete=models.SET_NULL, default=TOSSAAFIKO)
     diarimbola = models.ForeignKey(Diarimbola, null=True, related_name="laminasa_diarimbola", on_delete=models.SET_NULL)
     daty = models.DateField(default=datetime.now)
     asa = models.CharField(max_length=100, blank=True, null=True)
@@ -92,8 +120,9 @@ class Laminasa(models.Model):
 
 
 class JournalCaisse(models.Model):
-    taona = models.CharField(max_length=4, blank=True, null=True)
-    tossaafiko = models.ForeignKey(Tossaafiko,null=True, related_name="journal_tossaafiko", on_delete=models.SET_NULL)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, default=CURRENT_USER)
+    taona = models.CharField(max_length=4, blank=True, null=True, default=datetime.today().year)
+    tossaafiko = models.ForeignKey(Tossaafiko,null=True, related_name="journal_tossaafiko", on_delete=models.SET_NULL, default=TOSSAAFIKO)
     diarimbola = models.ForeignKey(Diarimbola, null=True, related_name="journal_diarimbola", on_delete=models.SET_NULL)
     daty = models.DateField(default=datetime.now)
     miditra = models.IntegerField(default=0)
@@ -165,7 +194,7 @@ def diarimbola_journal_post_save(sender, instance, *args, **kwargs):
                 vola_ambiny = diarimbola.vola_ambiny
                 
         if instance.fanamarihana == 'reliquat':
-            print('reliquat')
+            print('reliquat')   
             if instance.mivoaka != 0:
                 solde -= instance.mivoaka
                 vola_lany = diarimbola.vola_lany

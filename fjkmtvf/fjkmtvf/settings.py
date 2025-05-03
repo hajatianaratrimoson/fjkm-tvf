@@ -21,6 +21,7 @@ from django.conf.global_settings import LANGUAGES as DJANGO_LANGUAGES
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
@@ -29,6 +30,8 @@ SECRET_KEY = 'django-insecure-+11d=r0j4(d-s+)5i8*ftxeo582(inidl!ppy1xcervu@ip-qz
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+
+SITE_ID = 1
 
 ALLOWED_HOSTS = ['fjkmtvf.pythonanywhere.com', '127.0.0.1']
 
@@ -55,6 +58,7 @@ INSTALLED_APPS = [
         #app 
     'mpandraharaha',
     'fitantanambola',
+    'maridrefy',
     'userauths',
 ]
 

@@ -98,13 +98,19 @@ class KaontyTossaafikoResource(resources.ModelResource):
 @admin.register(KaontyTossaafiko)
 class KaontyTossaafikoAdmin(ImportExportModelAdmin):
     resource_classes = [KaontyTossaafikoResource]
-    
+    exclude = ['user', 'tossaafiko']
     list_display = ['tossaafiko', 'kaontytvf','isa', 'anarana']
     list_filter = ['tossaafiko', 'kaontytvf', 'isa', 'anarana']
     
     #Activate search field on model
     search_fields = ['tossaafiko', 'kaontytvf',  'isa', 'anarana']
 
+    def get_queryset(self, request):
+        qs = super(KaontyTossaafikoAdmin, self).get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        return qs.filter(user=request.user)
+    
 class LaminasaResource(resources.ModelResource):
     class Meta:
         model = Laminasa
@@ -113,7 +119,7 @@ class LaminasaResource(resources.ModelResource):
 @admin.register(Laminasa)
 class LaminasaAdmin(FilterByUserAuth, ImportExportModelAdmin):
     # resource_classes = [LaminasaResource]
-   
+    exclude = ['user', 'taona', 'tossaafiko']
     list_display = ['taona','tossaafiko','diarimbola', 'daty', 'asa', 'toerana', 'fanamarihana', 'tombana']
     list_filter = ['taona', 'diarimbola','tossaafiko', 'asa',('daty', DateRangeFilter)]
  
@@ -124,7 +130,11 @@ class LaminasaAdmin(FilterByUserAuth, ImportExportModelAdmin):
     #     return 'Daty1 daty2'
     #Activate search field on model
     search_fields = ['taona','tossaafiko','diarimbola', 'daty', 'asa', 'toerana', 'fanamarihana', 'tombana']
-    
+    def get_queryset(self, request):
+        qs = super(LaminasaAdmin, self).get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        return qs.filter(user=request.user)
     
 
 class DiarimbolaResource(resources.ModelResource):
@@ -135,13 +145,18 @@ class DiarimbolaResource(resources.ModelResource):
 @admin.register(Diarimbola)
 class DiarimbolaAdmin(FilterByUserAuth, ImportExportModelAdmin):
     resource_classes = [DiarimbolaResource]
-    
+    exclude = ['user', 'taona', 'tossaafiko']
     list_display = ['taona','tossaafiko','kaonty','vola_holaniana','vola_lany','vola_ambiny','ecart','fanamarihana']
     list_filter = ['taona','tossaafiko','kaonty','vola_holaniana','vola_lany','vola_ambiny','ecart','fanamarihana']
     
     #Activate search field on model
     search_fields = ['taona','tossaafiko','kaonty','vola_holaniana','vola_lany','vola_ambiny','ecart','fanamarihana']
 
+    def get_queryset(self, request):
+        qs = super(DiarimbolaAdmin, self).get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        return qs.filter(user=request.user)
 class JournalCaisseResource(resources.ModelResource):
     class Meta:
         model = JournalCaisse
@@ -150,12 +165,32 @@ class JournalCaisseResource(resources.ModelResource):
 @admin.register(JournalCaisse)
 class JournalCaisseAdmin(FilterByUserAuth, ImportExportModelAdmin):
     resource_classes = [JournalCaisseResource]
-   
+    exclude = ['user', 'taona', 'tossaafiko']
     list_display = ['daty','taona','tossaafiko','diarimbola', 'miditra', 'mivoaka', 'ded','pj_ded', 'edr', 'pj_edr','solde','fanamarihana']
     list_filter = ['taona','tossaafiko','diarimbola', 'ded', 'edr',('daty', DateRangeFilter)]
     
     #Activate search field on model
     search_fields = ['daty','tossaafiko','diarimbola', 'daty', 'miditra', 'mivoaka', 'ded','pj_ded', 'edr', 'pj_edr','solde','fanamarihana']
+
+    # def get_queryset(self, request):
+    #     qs = super(JournalCaisseAdmin, self).get_queryset(request)
+    #     return qs.filter(user=request.user)
+    
+    def get_queryset(self, request):
+        qs = super(JournalCaisseAdmin, self).get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        return qs.filter(user=request.user)
+    # def save_form(self, request, form, change):
+    #     obj = super().save_form(request, form, change)
+    #     if not change:
+    #         obj.user = request.user
+    #     return obj
+
+    # def save_model(self, request, obj, form, change):
+    #     print("save enter here")
+    #     obj.user = request.user  # Attach the current user
+    #     super().save_model(request, obj, form, change)  # Save the object"
 
 # class DedResource(resources.ModelResource):
 #     class Meta:
