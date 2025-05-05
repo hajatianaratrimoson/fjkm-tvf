@@ -102,18 +102,18 @@ class Mpiangona(models.Model):
     anarana_zatovo = models.CharField(max_length=30, verbose_name="Anarana zatovo", null=True, blank=True)
     fanampiny = models.CharField(max_length=25, verbose_name="Fanampin'anarana")
     toerana = models.CharField(max_length=100,default="Zanaka", help_text="Toerana misy azy eo anivon'ny ankohonana")
-    sary = models.ImageField(upload_to="mpiangona", default=('i8.jpg'), verbose_name="Sary")
+    sary = models.ImageField(upload_to="mpiangona", default=('i8.jpg'), verbose_name="Sary", blank=True, null=True)
     daty_nahaterahana = models.DateField(verbose_name='Daty nahaterahana', blank=True, null=True)
     fanamarihana  = models.CharField(max_length=500, null=True, blank=True, default="Mpiangona ato FJKM Tranovato Faravohitra", verbose_name="Fanamarihana",help_text="Filazana ny mombamomba ny mpiangona")
     
     # description  = RichTextUploadingField(null=True, blank=True, default="Mpiangona ato FJKM Tranovato Faravohitra", verbose_name="Fanamarihana",help_text="Filazana ny mombamomba ny mpiangona")
     
     adiresy = models.CharField(max_length=100, default="Antananarivo", verbose_name="Adiresy")
-    finday = models.CharField(max_length=13,validators=[RegexValidator(r'^\d\d\d \d\d \d\d\d \d\d' , message="Tsy atao abd fa tarehimarika ary asiana elanelany")], help_text="034 10 466 70", verbose_name="Finday")  
+    finday = models.CharField(max_length=13,validators=[RegexValidator(r'^\d\d\d \d\d \d\d\d \d\d' , message="Tsy atao abd fa tarehimarika ary asiana elanelany")], help_text="034 10 466 70", verbose_name="Finday", blank=True, null=True)  
     finday_2 = models.CharField(max_length=13,validators=[RegexValidator(r'^\d\d\d \d\d \d\d\d \d\d' , message="Tsy atao abd fa tarehimarika ary asiana elanelany")], help_text="034 10 466 70", verbose_name="Finday hafa", null=True, blank=True)  
     mailaka = models.EmailField(null=True, blank=True, verbose_name="Mailaka")
     
-    ankohonana = models.ForeignKey(Ankohonana, related_name="ankohonana", on_delete=models.SET_NULL, null=True, help_text="Mitondra ny anaran'ny Ray lohan'ny fianakaviana")  
+    ankohonana = models.ForeignKey(Ankohonana, related_name="ankohonana", on_delete=models.SET_NULL, null=True,blank=True, help_text="Mitondra ny anaran'ny Ray lohan'ny fianakaviana")  
     zanaka = models.IntegerField(default=0, verbose_name="Zanaka", help_text="Isan'ny zanaka")
     
     asa = models.CharField(max_length=50, verbose_name="Asa", null=True, blank=True)
