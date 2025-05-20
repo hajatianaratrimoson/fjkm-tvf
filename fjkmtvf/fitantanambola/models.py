@@ -16,6 +16,12 @@ AXE = (
     ("asa_iombonana", "Asa Iombonana"),  
 )
 
+FARITRA = (
+    ("ivelany", "Ivelany"),
+    ("anatiny", "Anatiny")
+)
+
+
 SATA = (
     ("reliquat", "reliquat"),
     ("annulation", "annulation")
@@ -64,7 +70,8 @@ class KaontyTvf(models.Model):
     isa = models.IntegerField() #Compte
     anarana = models.CharField(max_length=50, blank=True, null=True) #libellée
     rafitra = models.ForeignKey(Rafitra,related_name="kaonty_rafitra", null=True, on_delete=models.SET_NULL)
-    
+    faritra = models.CharField(max_length=10, blank=True, null=True, choices=FARITRA)
+     
     class Meta:
         verbose_name_plural = "Kaontytvf" 
     

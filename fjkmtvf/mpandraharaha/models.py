@@ -44,7 +44,6 @@ TOSSAAFIKO = (
     ("toby_fahamarinana", "TOBY FAHAMARINANA"),
     ("toby_fiadanana", "TOBY FIADANANA"),
 )
-
 ANDRAIKITRA = (
     ("filoha", "Filoha"),
     ("filoha_mpanampy", "Filoha Mpanampy"),
@@ -59,19 +58,21 @@ ANDRAIKITRA = (
     ("coach_rantsana", "Coaach Rantsana"),
     ("mpitarika_sampati", "Mpitarika Sampati"),
 )
-
+FARITRA = (
+    ("jerosalema", "JEROSALEMA"),
+    # Mila fenoina 07/05/2025
+)
 def user_directory_path(instance, filename):
     return 'user_{0}/{1}'.format(instance.user.id, filename)
-
 
 class Ankohonana(models.Model):
     # ankid = ShortUUIDField(unique=True, length=10, max_length=30, prefix="pad", alphabet="abcdefgh12345")
    
-    anarana = models.CharField(max_length=50, blank=True, null=True, help_text="Anaran'ny raim-pianakaviana", unique=True)
-    fokotany = models.CharField(max_length=50, blank=True, null=True, help_text="Anaran'ny raim-pianakaviana")
-    faritra = models.CharField(max_length=25, blank=True, null=True, help_text="faritra misy ny toerana hipetrahan'ny ankohonana")
-    faritra_tvf = models.CharField(max_length=25, blank=True, null=True, help_text="faritra misy ny toerana hipetrahan'ny ankohonana nofaritan'ny TVF")
-    firenena = models.CharField(max_length=25, blank=True, null=True, help_text="Firenena misy azy ankehitriny")
+    anarana = models.CharField(max_length=100,  verbose_name="Anarana feno", blank=True, null=True, help_text="Anaran'ny raim-pianakaviana", unique=True)
+    fokotany = models.CharField(max_length=50, blank=True, null=True, help_text="Fokotany misy ny toerana hipetrahan'ny ankohonana")
+    faritra = models.CharField(max_length=25, blank=True, null=True, help_text="Faritra misy ny toerana hipetrahan'ny ankohonana")
+    faritra_tvf = models.CharField(max_length=25, blank=True, null=True, help_text="Faritra misy ny toerana hipetrahan'ny ankohonana nofaritan'ny TVF")
+    firenena = models.CharField(max_length=25, default="Madagasikara", blank=True, null=True, help_text="Firenena misy azy ankehitriny")
     
     
     
@@ -80,7 +81,6 @@ class Ankohonana(models.Model):
         
     def __str__(self):
         return self.anarana
-
 
 class Tossaafiko(models.Model):
     # said = ShortUUIDField(unique=True, length=10, max_length=30, prefix="said", alphabet="abcdefgh12345")
@@ -94,22 +94,21 @@ class Tossaafiko(models.Model):
     def __str__(self):
         return f"{self.anarana}" 
 
-
 class Mpiangona(models.Model):
     # piid = ShortUUIDField(unique=True, length=10, max_length=30, prefix="pgn", alphabet="abcdefgh12345")
     
-    anarana = models.CharField(max_length=30, verbose_name="Anarana")
-    anarana_zatovo = models.CharField(max_length=30, verbose_name="Anarana zatovo", null=True, blank=True)
-    fanampiny = models.CharField(max_length=25, verbose_name="Fanampin'anarana")
-    toerana = models.CharField(max_length=100,default="Zanaka", help_text="Toerana misy azy eo anivon'ny ankohonana")
+    anarana = models.CharField(max_length=100, verbose_name="Anarana")
+    anarana_zatovo = models.CharField(max_length=100, verbose_name="Anarana zatovo", null=True, blank=True)
+    fanampiny = models.CharField(max_length=100, verbose_name="Fanampin'anarana")
+    toerana = models.CharField(max_length=100,default="Zanaka", verbose_name="Toerana", help_text="Toerana misy azy eo anivon'ny ankohonana")
     sary = models.ImageField(upload_to="mpiangona", default=('i8.jpg'), verbose_name="Sary", blank=True, null=True)
     daty_nahaterahana = models.DateField(verbose_name='Daty nahaterahana', blank=True, null=True)
-    fanamarihana  = models.CharField(max_length=500, null=True, blank=True, default="Mpiangona ato FJKM Tranovato Faravohitra", verbose_name="Fanamarihana",help_text="Filazana ny mombamomba ny mpiangona")
+    fanamarihana  = models.CharField(max_length=500, null=True, blank=True, default=" ", verbose_name="Fanamarihana",help_text="Filazana ny mombamomba ny mpiangona")
     
     # description  = RichTextUploadingField(null=True, blank=True, default="Mpiangona ato FJKM Tranovato Faravohitra", verbose_name="Fanamarihana",help_text="Filazana ny mombamomba ny mpiangona")
     
-    adiresy = models.CharField(max_length=100, default="Antananarivo", verbose_name="Adiresy")
-    finday = models.CharField(max_length=13,validators=[RegexValidator(r'^\d\d\d \d\d \d\d\d \d\d' , message="Tsy atao abd fa tarehimarika ary asiana elanelany")], help_text="034 10 466 70", verbose_name="Finday", blank=True, null=True)  
+    adiresy = models.CharField(max_length=100, default="Lot: ", verbose_name="Adiresy")
+    finday = models.CharField(max_length=13,validators=[RegexValidator(r'^\d\d\d \d\d \d\d\d \d\d' , message="Tsy atao abd fa tarehimarika ary asiana elanelany")], help_text="034 10 466 70", default="034 ", verbose_name="Finday", blank=True, null=True)  
     finday_2 = models.CharField(max_length=13,validators=[RegexValidator(r'^\d\d\d \d\d \d\d\d \d\d' , message="Tsy atao abd fa tarehimarika ary asiana elanelany")], help_text="034 10 466 70", verbose_name="Finday hafa", null=True, blank=True)  
     mailaka = models.EmailField(null=True, blank=True, verbose_name="Mailaka")
     
@@ -157,30 +156,28 @@ class Mpandray(models.Model):
     def __str__(self):
         return self.karatra
     
-
 class Batisa(models.Model):
     anarana = models.ForeignKey(Mpiangona, related_name="batisa_mpiangona", on_delete=models.SET_NULL, null=True, blank=True, verbose_name="Anarana" )
     
-    daty_nanolorana = models.DateField(verbose_name="Daty nanolorana", default=datetime.now, null=True, blank=True)
-    daty_batisa = models.DateField(verbose_name="Daty batisa", default=datetime.now, null=True, blank=True)
+    daty_nanolorana = models.DateField(verbose_name="Daty nanolorana", null=True, blank=True)
+    daty_batisa = models.DateField(verbose_name="Daty batisa", null=True, blank=True)
     rad = models.ManyToManyField(Mpiangona, verbose_name="Ray aman-dReny", null=True, blank=True)
     fiangonana = models.CharField(max_length=50, help_text="Fiangonana nanaovana batisa", null=True, blank=True)
-    firenena = models.CharField(max_length=25, help_text="Firenena nanaovana batisa", null=True, blank=True)
+    firenena = models.CharField(max_length=25, default="Madagasikara",help_text="Firenena nanaovana batisa", null=True, blank=True)
     class Meta:
         verbose_name_plural = "Batisa"
     
     def __str__(self):
         return f"{self.anarana}"
 
-
 class Katekomena(models.Model):
     anarana = models.ForeignKey(Mpiangona, related_name="katekomena_mpiangona", on_delete=models.SET_NULL, null=True, blank=True, verbose_name="Anarana" )
     
     andiany =  models.CharField(max_length=20, help_text="Anarana oentin'ny andian'ny katekomena", null=True, blank=True)
     daty_nidirana = models.DateField(verbose_name="Daty nidirana nianatra", default=datetime.now, null=True, blank=True)
-    daty_nivoahana = models.DateField(verbose_name="Daty nivoahana katekomena", default=datetime.now, null=True, blank=True)
-    fiangonana = models.CharField(max_length=50, help_text="Fiangonana namoahana azy", null=True, blank=True)
-    firenena = models.CharField(max_length=25, help_text="Firenena namoahana azy", null=True, blank=True)
+    daty_nivoahana = models.DateField(verbose_name="Daty nivoahana katekomena", null=True, blank=True)
+    fiangonana = models.CharField(max_length=50,default="FJKM Tranovato Faravohitra", help_text="Fiangonana namoahana azy", null=True, blank=True)
+    firenena = models.CharField(max_length=25, default="Madagasikara", help_text="Firenena namoahana azy", null=True, blank=True)
     sata = models.CharField(max_length=15, choices=SATA, default='mianatra') 
     class Meta:
         verbose_name_plural = "Katekomena"
@@ -188,16 +185,15 @@ class Katekomena(models.Model):
     def __str__(self):
         return f"{self.anarana}"
 
-
 class Mariazy(models.Model):
     lahy = models.ForeignKey(Mpiangona, related_name="mpiangona_lahy", on_delete=models.SET_NULL, null=True, blank=True, verbose_name="Anaran'ny lahy" )
     vavy = models.ForeignKey(Mpiangona, related_name="mpiangona_vavy", on_delete=models.SET_NULL, null=True, blank=True, verbose_name="Anaran'ny vavy" )
     
-    daty_sivily = models.DateField(verbose_name="Daty sivily", default=datetime.now, null=True, blank=True)
-    kaominina = models.CharField(max_length=50, help_text="Kaominina", null=True, blank=True)
+    daty_sivily = models.DateField(verbose_name="Daty sivily", null=True, blank=True)
+    kaominina = models.CharField(max_length=50, help_text="Kaominina nanaovana ny mariazy sivily", null=True, blank=True)
     daty_fiangonana = models.DateField(verbose_name="Daty Fiangonana", default=datetime.now, null=True, blank=True)
-    fiangonana = models.CharField(max_length=25, help_text="Fiangonana", null=True, blank=True)
-    firenena = models.CharField(max_length=25, help_text="Firenena namoahana azy", null=True, blank=True)
+    fiangonana = models.CharField(max_length=25,default="FJKM Tranovato Faravohitra", help_text="Fiangonana", null=True, blank=True)
+    firenena = models.CharField(max_length=25, default="Madagasikara" ,help_text="Firenena namoahana azy", null=True, blank=True)
     
     class Meta:
         verbose_name_plural = "Mariazy"
