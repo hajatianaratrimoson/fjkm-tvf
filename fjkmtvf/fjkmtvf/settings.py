@@ -98,26 +98,26 @@ WSGI_APPLICATION = 'fjkmtvf.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'fjkmtvf$default',
-#         'USER': 'fjkmtvf',
-#         'PASSWORD': 'Problem_digital2025',
-#         'HOST': 'fjkmtvf.mysql.pythonanywhere-services.com', 
-#         'PORT': '3306',
-#         'OPTIONS': {
-# 'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
-# }
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'fjkmtvf$default',
+        'USER': 'fjkmtvf',
+        'PASSWORD': 'Problem_digital2025',
+        'HOST': 'fjkmtvf.mysql.pythonanywhere-services.com', 
+        'PORT': '3306',
+        'OPTIONS': {
+'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
+}
+    }
+}
 
 
 # Password validation
@@ -182,7 +182,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 JAZZMIN_SETTINGS = {
     "welcome_sign": "Ataovy ho mpianatro ny firenena rehetra",
-     "user_avatar": "avatar",
+    "user_avatar": "avatar",
     'site_title' : "FJKM Tranovato Faravohitra",
     'site_header' : "FJKM TVF",
     'site_brand' : "FJKM TVF",
@@ -206,9 +206,7 @@ JAZZMIN_SETTINGS = {
 
         # App with dropdown menu to all its models pages (Permissions checked against models)
         {"app": "mpandraharaha"},
-        {"name": "Fitantanambola", "app":"fitantanambola"},
-        
-        
+        {"name": "Fitantanambola", "app":"fitantanambola"},    
     ],
 
      "usermenu_links": [
@@ -232,11 +230,11 @@ JAZZMIN_SETTINGS = {
         "mpandraharaha.Katekomena": "fas fa-user-graduate",
         "mpandraharaha.Mariazy": "fas fa-venus-mars",
         
+        "fitantanambola.KaontyTossaafiko":"fas fa-piggy-bank",
         "fitantanambola.Diarimbola":"far fa-address-book",
         "fitantanambola.JournalCaisse":"fas fa-balance-scale",
+         "fitantanambola.Laminasa":"fas fa-hand-holding-usd",
         "fitantanambola.KaontyTvf":"fas fa-chart-pie",
-        "fitantanambola.KaontyTossaafiko":"fas fa-piggy-bank",
-        "fitantanambola.Laminasa":"fas fa-hand-holding-usd",
         "fitantanambola.Rafitra":"fas fa-landmark",
         
    },
@@ -255,7 +253,7 @@ JAZZMIN_SETTINGS = {
 #Theme Choice
 JAZZMIN_UI_TWEAKS = {
     "navbar_small_text": False,
-    "footer_small_text": False,
+    "footer_small_text": True,
     "body_small_text": False,
     "brand_small_text": False,
     "brand_colour": False,

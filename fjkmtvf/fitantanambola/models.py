@@ -8,7 +8,9 @@ from django.dispatch import receiver
 import inspect
     
 
-
+""" Params
+    
+"""
 AXE = (
     ("asa_fitoriana_filazantsara", "Asa Fitoriana Filazantsara"),
     ("asa_fanabeazana", "Asa Fanabeazana"),
@@ -21,13 +23,10 @@ FARITRA = (
     ("anatiny", "Anatiny")
 )
 
-
 SATA = (
     ("reliquat", "reliquat"),
     ("annulation", "annulation")
 )
-
-
 
 def get_current_user():
     for frame_record in inspect.stack():
@@ -50,11 +49,12 @@ def get_current_tossaafiko():
 CURRENT_USER = get_current_user 
 TOSSAAFIKO = get_current_tossaafiko
 
+""" _Model_
 
-
-
-
-# Cadre Logique
+    Returns:
+        All Models
+"""
+# RAFITRA = Cadre Logique
 class Rafitra(models.Model):
     axe = models.CharField(max_length=30, choices=AXE)
     fanamarihana = models.CharField(max_length=100, blank=True, null=True)
@@ -65,33 +65,33 @@ class Rafitra(models.Model):
     def __str__(self):
         return self.axe
 
-
+# KAONTY TVF
 class KaontyTvf(models.Model):
-    isa = models.IntegerField() #Compte
-    anarana = models.CharField(max_length=50, blank=True, null=True) #libellée
-    rafitra = models.ForeignKey(Rafitra,related_name="kaonty_rafitra", null=True, on_delete=models.SET_NULL)
-    faritra = models.CharField(max_length=10, blank=True, null=True, choices=FARITRA)
+    isa = models.IntegerField(help_text="N° Kaonty")
+    anarana = models.CharField(max_length=100, blank=True, null=True, help_text="Famaritana ny Kaonty na Libellé") 
+    rafitra = models.ForeignKey(Rafitra,related_name="kaonty_rafitra", null=True, on_delete=models.SET_NULL, help_text="AXE") 
+    faritra = models.CharField(max_length=10, blank=True, null=True, choices=FARITRA, help_text="Asa ivelany na anatiny")
      
     class Meta:
         verbose_name_plural = "Kaontytvf" 
     
     def __str__(self):
-        return f"{str(self.isa)} - {self.anarana}"
+        return f"{str(self.isa)} - {self.anarana} - {self.faritra}" # Updated at 22/05/2025
 
+# KAONTY TOSSAAFIKO
 class KaontyTossaafiko(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, default=CURRENT_USER)
-    tossaafiko = models.ForeignKey(Tossaafiko,null=True, related_name="kaonty_tossaafiko", on_delete=models.SET_NULL)
+    tossaafiko = models.ForeignKey(Tossaafiko,null=True, related_name="kaonty_tossaafiko", on_delete=models.SET_NULL, default=TOSSAAFIKO) # updated at 22/05/2025
     kaontytvf = models.ForeignKey(KaontyTvf, related_name='kaontytvf', null=True, on_delete=models.SET_NULL)
-    isa = models.IntegerField() #Compte
-    anarana = models.CharField(max_length=50, blank=True, null=True) #libellée
-    
+    isa = models.IntegerField(help_text="Sous-Compte TOSSAAFIKO") 
+    anarana = models.CharField(max_length=100, blank=True, null=True, help_text="Libellée")
     class Meta:
         verbose_name_plural = "KaontyTossaafiko" 
     
     def __str__(self):
         return f"{str(self.isa)} - {self.anarana}"
 
-
+# DIARIMBOLA
 class Diarimbola(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, default=CURRENT_USER)
     taona = models.CharField(max_length=4, blank=True, null=True, default=datetime.today().year)
@@ -107,18 +107,19 @@ class Diarimbola(models.Model):
         verbose_name_plural = "Diarimbola" 
     
     def __str__(self):
-        return f"{self.kaonty.isa} - {self.tossaafiko.anarana}"
-    
+        return f"{self.kaonty.isa} - {self.kaonty.anarana}" #Updated at 22/05/2025
+
+#LAMINASA    
 class Laminasa(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, default=CURRENT_USER)
     taona = models.CharField(max_length=4, blank=True, null=True, default=datetime.today().year)
     tossaafiko = models.ForeignKey(Tossaafiko,null=True, related_name="laminasa_tossaafiko", on_delete=models.SET_NULL, default=TOSSAAFIKO)
     diarimbola = models.ForeignKey(Diarimbola, null=True, related_name="laminasa_diarimbola", on_delete=models.SET_NULL)
     daty = models.DateField(default=datetime.now)
-    asa = models.CharField(max_length=100, blank=True, null=True)
+    asa = models.CharField(max_length=250, blank=True, null=True)
     # kaonty = models.ForeignKey(KaontyTossaafiko, related_name='laminasa_kaonty', null=True, blank=True, on_delete=models.SET_NULL)
-    toerana = models.CharField(max_length=50, blank=True, null=True)
-    fanamarihana = models.CharField(max_length=200, blank=True, null=True)
+    toerana = models.CharField(max_length=150, blank=True, null=True)
+    fanamarihana = models.CharField(max_length=300, blank=True, null=True)
     tombana = models.IntegerField(default=0)
 
     class Meta:
@@ -127,7 +128,7 @@ class Laminasa(models.Model):
     def __str__(self):
         return f"{self.daty} {self.asa}"
 
-
+#JOURNAL CAISSE 
 class JournalCaisse(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, default=CURRENT_USER)
     taona = models.CharField(max_length=4, blank=True, null=True, default=datetime.today().year)
@@ -141,8 +142,8 @@ class JournalCaisse(models.Model):
     edr = models.CharField(max_length=4, blank=True, null=True)
     pj_edr = models.ImageField(upload_to='pieces', null=True, blank=True)
     solde = models.IntegerField(blank=True, null=True)
-    fanamarihana = models.CharField(max_length=200, blank=True, null=True, choices=SATA, verbose_name="Sata")
-    fanamarihana_1 = models.CharField(max_length=200, blank=True, null=True, verbose_name="Fanamarihana")
+    fanamarihana = models.CharField(max_length=300, blank=True, null=True, choices=SATA, verbose_name="Sata")
+    fanamarihana_1 = models.CharField(max_length=300, blank=True, null=True, verbose_name="Fanamarihana")
     
 
     class Meta:
@@ -174,7 +175,6 @@ def diarimbola_post_save(sender, instance, *args, **kwargs):
 @receiver(pre_save, sender=JournalCaisse)
 def diarimbola_journal_post_save(sender, instance, *args, **kwargs):
         pass
-    
     
 @receiver(post_save, sender=JournalCaisse)
 def diarimbola_journal_post_save(sender, instance, *args, **kwargs):

@@ -56,7 +56,7 @@ class FilterByUserAuth(GuardedModelAdmin):
     # def has_delete_permission(self, request, obj = None):
     #     return self.has_permission(request, obj, 'delete')
     
-
+#RAFITRA
 class RafitraResource(resources.ModelResource):
     class Meta:
         model = Rafitra
@@ -73,7 +73,7 @@ class RafitraAdmin(ImportExportModelAdmin):
     #Activate search field on model
     search_fields = ['axe', 'fanamarihana']
 
-
+# KAONTY TVF
 class KaontyTvfResource(resources.ModelResource):
     class Meta:
         model = KaontyTvf
@@ -83,13 +83,13 @@ class KaontyTvfResource(resources.ModelResource):
 class KaontyTvfAdmin(ImportExportModelAdmin):
     resource_classes = [KaontyTvfResource]
     
-    list_display = ['isa', 'anarana', 'rafitra']
-    list_filter = ['isa', 'anarana', 'rafitra']
+    list_display = ['isa', 'anarana', 'rafitra', 'faritra'] # Updated at 22/05/2025
+    list_filter = ['isa', 'anarana', 'rafitra', 'faritra'] # Updated at 22/05/2025
     
     #Activate search field on model
-    search_fields = ['isa', 'anarana', 'rafitra']
+    search_fields = ['isa', 'anarana', 'rafitra','faritra'] # Updated at 22/05/2025
 
-
+# KAONTY TOSSAAFIKO
 class KaontyTossaafikoResource(resources.ModelResource):
     class Meta:
         model = KaontyTossaafiko
@@ -110,7 +110,8 @@ class KaontyTossaafikoAdmin(ImportExportModelAdmin):
         if request.user.is_superuser:
             return qs
         return qs.filter(user=request.user)
-    
+
+# LAMINASA 
 class LaminasaResource(resources.ModelResource):
     class Meta:
         model = Laminasa
@@ -136,7 +137,7 @@ class LaminasaAdmin(FilterByUserAuth, ImportExportModelAdmin):
             return qs
         return qs.filter(user=request.user)
     
-
+# DIARIMBOLA
 class DiarimbolaResource(resources.ModelResource):
     class Meta:
         model = Diarimbola
@@ -147,16 +148,19 @@ class DiarimbolaAdmin(FilterByUserAuth, ImportExportModelAdmin):
     resource_classes = [DiarimbolaResource]
     exclude = ['user', 'taona', 'tossaafiko']
     list_display = ['taona','tossaafiko','kaonty','vola_holaniana','vola_lany','vola_ambiny','ecart','fanamarihana']
-    list_filter = ['taona','tossaafiko','kaonty','vola_holaniana','vola_lany','vola_ambiny','ecart','fanamarihana']
+    list_filter = ['taona','tossaafiko','kaonty']
     
     #Activate search field on model
-    search_fields = ['taona','tossaafiko','kaonty','vola_holaniana','vola_lany','vola_ambiny','ecart','fanamarihana']
+    search_fields = ['taona','tossaafiko','kaonty']
 
     def get_queryset(self, request):
         qs = super(DiarimbolaAdmin, self).get_queryset(request)
         if request.user.is_superuser:
             return qs
         return qs.filter(user=request.user)
+
+
+# JOURNAL CAISSE
 class JournalCaisseResource(resources.ModelResource):
     class Meta:
         model = JournalCaisse
@@ -192,6 +196,14 @@ class JournalCaisseAdmin(FilterByUserAuth, ImportExportModelAdmin):
     #     obj.user = request.user  # Attach the current user
     #     super().save_model(request, obj, form, change)  # Save the object"
 
+
+
+
+
+
+
+
+# FOR ARCHIVE
 # class DedResource(resources.ModelResource):
 #     class Meta:
 #         model = Ded
