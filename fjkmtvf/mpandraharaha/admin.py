@@ -62,11 +62,12 @@ class KatekomenaAdminInline(admin.TabularInline):
     fields = ['anarana','andiany', 'daty_nidirana','sata','daty_nivoahana', 'fiangonana', 'firenena']
 
 
+
 class MpiangonaResource(resources.ModelResource):
     class Meta:
         model = Mpiangona
         # List related field by ForeigKey
-        fields = ['anarana', 'fanampiny', 'adiresy', 'finday','ankohonana__anarana','toerana', 'zanaka']
+        # fields = ['anarana', 'fanampiny', 'adiresy', 'finday','ankohonana__anarana','toerana', 'zanaka']
 
 @admin.register(Mpiangona)
 class MpiangonaAdmin(ImportExportModelAdmin):
@@ -85,7 +86,7 @@ class MpiangonaAdmin(ImportExportModelAdmin):
 class MpandrayResource(resources.ModelResource):
     class Meta:
         model: Mpandray
-        fields = ['karatra','mpandray__anarana', 'mpandray__fanampiny', ]
+        # fields = ['karatra','mpandray__anarana', 'mpandray__fanampiny', ]
 
 @admin.register(Mpandray)
 class MpandrayAdmin(ImportExportModelAdmin):
@@ -98,7 +99,7 @@ class MpandrayAdmin(ImportExportModelAdmin):
 class MpikambanaResource(resources.ModelResource):
     class Meta:
         model = Mpikambana
-        fields = ('mpikambana__anarana', 'mpikambana__fanampiny', 'tossaafiko__anarana', 'andraikitra', 'taona')
+        # fields = ('mpikambana__anarana', 'mpikambana__fanampiny', 'tossaafiko__anarana', 'andraikitra', 'taona')
 
 @admin.register(Mpikambana)
 class MpikambanaAdmin(ImportExportModelAdmin):
@@ -112,7 +113,7 @@ class MpikambanaAdmin(ImportExportModelAdmin):
 class AnkohonanaResource(resources.ModelResource):
     class Meta:
         model = Ankohonana
-        fields = ['anarana', 'faritra']  
+        # fields = ['anarana', 'faritra']  
 
 @admin.register(Ankohonana) 
 class AnkohonanaAdmin(ImportExportModelAdmin):
@@ -129,8 +130,7 @@ class AnkohonanaAdmin(ImportExportModelAdmin):
 class TossaafikoResource(resources.ModelResource):
     class Meta:
         model = Tossaafiko
-        fields = ['anarana', 'fanamarihana']
-
+        # fields = ['anarana', 'fanamarihana']
 
 @admin.register(Tossaafiko)
 class TossaafikoAdmin(ImportExportModelAdmin):
@@ -145,7 +145,7 @@ class TossaafikoAdmin(ImportExportModelAdmin):
 class BatisaResource(resources.ModelResource):
     class Meta:
         model = Batisa
-        fields = ('anarana__anarana', 'anarana_fanampy', 'daty_nanolorana', 'daty_batisa')
+        # fields = ('anarana__anarana', 'anarana_fanampy', 'daty_nanolorana', 'daty_batisa')
 
 @admin.register(Batisa)
 class BatisaAdmin(ImportExportModelAdmin):
@@ -157,7 +157,7 @@ class BatisaAdmin(ImportExportModelAdmin):
 class KatekomenaResource(resources.ModelResource):
     class Meta:
         model: Katekomena
-        fields = ['anarana','daty_nidirana','sata','daty_nivoahana', 'andiany','fiangonana', 'firenena' ]
+       #fields = ['anarana','daty_nidirana','sata','daty_nivoahana', 'andiany','fiangonana', 'firenena' ]
 
 @admin.register(Katekomena)
 class KatekomenaAdmin(ImportExportModelAdmin):
